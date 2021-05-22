@@ -1,4 +1,4 @@
-package com.algaworks.algamoney.api.model;
+package com.algaworks.algamoney.api.models;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
