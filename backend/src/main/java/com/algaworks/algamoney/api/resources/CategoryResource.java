@@ -37,13 +37,15 @@ public class CategoryResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().pathSegment("{/id}")
 				.buildAndExpand(categorySaved.getId()).toUri();
 		response.setHeader("Location", uri.toASCIIString());
-		
+
 		return ResponseEntity.created(uri).body(categorySaved);
 	}
-	
+
 	@GetMapping("/{id}")
-	public Category findById(@PathVariable Long id) {
-		return categoryRepository.findById(id).orElse(null);
+	public ResponseEntity<Category> findById(@PathVariable Long id) {
+		return this.categoryRepository.findById(id)
+				.map(category -> ResponseEntity.ok(category))
+				.orElse(ResponseEntity.notFound().build());
 	}
 
 }
