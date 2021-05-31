@@ -10,16 +10,27 @@ import com.algaworks.algamoney.api.repositories.PeopleRepository;
 
 @Service
 public class PeopleService {
-	
+
 	@Autowired
 	private PeopleRepository peopleRepository;
 
 	public People update(Long id, People people) {
-		People savedPeople = peopleRepository.findById(id)
-				.orElseThrow(() -> new EmptyResultDataAccessException(1));
+		People savedPeople = findPeopleById(id);
 
-		BeanUtils.copyProperties(people, savedPeople,"id");
-		
+		BeanUtils.copyProperties(people, savedPeople, "id");
 		return this.peopleRepository.save(savedPeople);
 	}
+
+	public void updatePropertyActive(Long id, Boolean active) {
+		People savedPeople = findPeopleById(id);
+		savedPeople.setActive(active);
+		peopleRepository.save(savedPeople);
+	}
+
+	private People findPeopleById(Long id) {
+		People savedPeople = peopleRepository.findById(id)
+				.orElseThrow(() -> new EmptyResultDataAccessException(1));
+		return savedPeople;
+	}
+
 }
