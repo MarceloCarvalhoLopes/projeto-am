@@ -6,7 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="people")
@@ -49,6 +53,12 @@ public class People {
 	}
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+	
+	@JsonIgnore
+	@Transient
+	public boolean isInactive() {
+		return !this.active;
 	}
 	
 	@Override

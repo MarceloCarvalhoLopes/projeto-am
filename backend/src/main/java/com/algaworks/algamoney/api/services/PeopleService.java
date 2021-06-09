@@ -27,7 +27,7 @@ public class PeopleService {
 		peopleRepository.save(savedPeople);
 	}
 
-	private People findPeopleById(Long id) {
+	public People findPeopleById(Long id) {
 		People savedPeople = peopleRepository.findById(id)
 				.orElseThrow(() -> new EmptyResultDataAccessException(1));
 		return savedPeople;
