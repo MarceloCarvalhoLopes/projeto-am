@@ -25,6 +25,7 @@ import com.algaworks.algamoney.api.events.ResourceCreatedEvent;
 import com.algaworks.algamoney.api.exceptionhander.AlgamoneyExceptionHandler.Error;
 import com.algaworks.algamoney.api.models.FinancialRelease;
 import com.algaworks.algamoney.api.repositories.FinancialReleaseRepository;
+import com.algaworks.algamoney.api.repositories.filter.FinancialReleaseFilter;
 import com.algaworks.algamoney.api.services.FinancialReleaseService;
 import com.algaworks.algamoney.api.services.exception.PeopleNonExistentOrInactive;
 
@@ -45,8 +46,8 @@ public class FinancialReleaseResource {
 	private MessageSource messageSource;
 	
 	@GetMapping
-	public List<FinancialRelease> findAll(){
-		return this.financialReleaseRepository.findAll();
+	public List<FinancialRelease> find(FinancialReleaseFilter financialReleaseFilter  ){
+		return this.financialReleaseRepository.filter(financialReleaseFilter);
 	}
 	
 	@GetMapping("/{id}")
