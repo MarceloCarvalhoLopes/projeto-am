@@ -11,6 +11,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.util.ObjectUtils;
 
 import com.algaworks.algamoney.api.models.FinancialRelease;
@@ -23,7 +26,7 @@ public class FinancialReleaseRepositoryImpl implements FinancialReleaseRepositor
 	private EntityManager manager;
 
 	@Override
-	public List<FinancialRelease> filter(FinancialReleaseFilter financialReleaseFilter) {
+	public Page<FinancialRelease> filter(FinancialReleaseFilter financialReleaseFilter, Pageable pageable) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<FinancialRelease> criteria = builder.createQuery(FinancialRelease.class);
 		Root<FinancialRelease> root = criteria.from(FinancialRelease.class);
@@ -32,7 +35,10 @@ public class FinancialReleaseRepositoryImpl implements FinancialReleaseRepositor
 		criteria.where(predicates);
 
 		TypedQuery<FinancialRelease> query = manager.createQuery(criteria);
-		return query.getResultList();
+		addPaginationRestriction(query, pageable);
+		
+		return new PageImpl<>(query.getResultList(), pageable, total(financialReleaseFilter));
+		
 	}
 
 	private Predicate[] createRestriction(FinancialReleaseFilter financialReleaseFilter, CriteriaBuilder builder,
@@ -56,6 +62,28 @@ public class FinancialReleaseRepositoryImpl implements FinancialReleaseRepositor
 		
 
 		return predicates.toArray(new Predicate[predicates.size()]);
+	}
+	
+	private void addPaginationRestriction(TypedQuery<FinancialRelease> query, Pageable pageable) {
+		int currentPage =  pageable.getPageNumber();
+		int totalRecordsPerPage = pageable.getPageSize();
+		int firstRecordOnThePage = currentPage * totalRecordsPerPage;
+		
+		query.setFirstResult(firstRecordOnThePage);
+		query.setMaxResults(totalRecordsPerPage);
+	}
+	
+	private Long total(FinancialReleaseFilter financialReleaseFilter) {
+		CriteriaBuilder builder = manager.getCriteriaBuilder();
+		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+		Root<FinancialRelease> root = criteria.from(FinancialRelease.class);
+		
+		Predicate[] predicates = createRestriction(financialReleaseFilter, builder, root);
+		criteria.where(predicates);
+
+		criteria.select(builder.count(root));
+		
+		return manager.createQuery(criteria).getSingleResult();
 	}
 
 }

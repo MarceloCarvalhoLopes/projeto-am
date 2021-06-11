@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -48,8 +50,8 @@ public class FinancialReleaseResource {
 	private MessageSource messageSource;
 	
 	@GetMapping
-	public List<FinancialRelease> find(FinancialReleaseFilter financialReleaseFilter  ){
-		return this.financialReleaseRepository.filter(financialReleaseFilter);
+	public Page<FinancialRelease> find(FinancialReleaseFilter financialReleaseFilter, Pageable pageable  ){
+		return this.financialReleaseRepository.filter(financialReleaseFilter, pageable);
 	}
 	
 	@GetMapping("/{id}")
