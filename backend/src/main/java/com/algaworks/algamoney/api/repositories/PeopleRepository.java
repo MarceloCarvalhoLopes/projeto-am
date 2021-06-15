@@ -6,5 +6,4 @@ import com.algaworks.algamoney.api.models.People;
 
 public interface PeopleRepository extends JpaRepository<People, Long> {
 	
-
 }

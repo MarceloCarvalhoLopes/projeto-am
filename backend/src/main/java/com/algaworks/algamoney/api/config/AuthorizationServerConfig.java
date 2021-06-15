@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -17,16 +18,19 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
 	@Autowired
+	private UserDetailsService userDetailsService;
+	
+	@Autowired
 	private AuthenticationManager authenticationManager;
 	
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
 		.withClient("angular")
-		.secret("@ngul@r0")
+		.secret("$2a$10$i6Ig7qOjtUI3hMb9b5aBKOSSm4qHF.bg8GSpVYVAL5Pdai6g97F4K")  
 		.scopes("read", "write")
 		.authorizedGrantTypes("password", "refresh_token")
-		.accessTokenValiditySeconds(120)
+		.accessTokenValiditySeconds(1800)
 		.refreshTokenValiditySeconds(3600 * 24);
 	}
 	
@@ -34,9 +38,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		endpoints
 		 	.tokenStore(tokenStore())
-		 	.accessTokenConverter(jwtAccessTokenConverter())
+		 	.accessTokenConverter(this.jwtAccessTokenConverter())
 		 	.reuseRefreshTokens(false)
-		 	.authenticationManager(authenticationManager);
+		 	.userDetailsService(this.userDetailsService)
+		 	.authenticationManager(this.authenticationManager);
 	}
 	
 	@Bean
