@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,11 +51,13 @@ public class FinancialReleaseResource {
 	private MessageSource messageSource;
 	
 	@GetMapping
+	@PreAuthorize("hasAuthority('ROLE_SEARCH_FINANCIAL_RELEASE') and #oauth2.hasScope('read')")
 	public Page<FinancialRelease> find(FinancialReleaseFilter financialReleaseFilter, Pageable pageable  ){
 		return this.financialReleaseRepository.filter(financialReleaseFilter, pageable);
 	}
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('ROLE_SEARCH_FINANCIAL_RELEASE') and #oauth2.hasScope('read')")	
 	public ResponseEntity<FinancialRelease> findById(@PathVariable Long id){
 		return this.financialReleaseRepository.findById(id)
 				.map(financial -> ResponseEntity.ok(financial))
@@ -63,6 +66,7 @@ public class FinancialReleaseResource {
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_REGISTER_FINANCIAL_RELEASE') and #oauth2.hasScope('write')")
 	public ResponseEntity<FinancialRelease> create (@Valid @RequestBody FinancialRelease financialRelease, HttpServletResponse response ){
 		FinancialRelease savedFinancial = financialReleaseService.save(financialRelease);
 		applicationEventPublisher.publishEvent(new ResourceCreatedEvent(this, response, savedFinancial.getId()));
@@ -72,6 +76,7 @@ public class FinancialReleaseResource {
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasAuthority('ROLE_REMOVE_FINANCIAL_RELEASE') and #oauth2.hasScope('write')")	
 	public void delete(@PathVariable Long id) {
 		this.financialReleaseRepository.deleteById(id);
 	}

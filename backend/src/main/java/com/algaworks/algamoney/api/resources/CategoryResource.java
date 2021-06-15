@@ -37,6 +37,14 @@ public class CategoryResource {
 		return categoryRepository.findAll();
 	}
 
+	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('ROLE_SEARCH_CATEGORY') and #oauth2.hasScope('read')")
+	public ResponseEntity<Category> findById(@PathVariable Long id) {
+		return this.categoryRepository.findById(id)
+				.map(category -> ResponseEntity.ok(category))
+				.orElse(ResponseEntity.notFound().build());
+	}
+	
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_REGISTER_CATEGORY') and #oauth2.hasScope('write')")
 	public ResponseEntity<Category> create(@Valid @RequestBody Category category, HttpServletResponse response) {
@@ -47,12 +55,5 @@ public class CategoryResource {
 		return ResponseEntity.status(HttpStatus.CREATED).body(savedcategory);
 	}
 
-	@GetMapping("/{id}")
-	@PreAuthorize("hasAuthority('ROLE_SEARCH_CATEGORY') and #oauth2.hasScope('read')")
-	public ResponseEntity<Category> findById(@PathVariable Long id) {
-		return this.categoryRepository.findById(id)
-				.map(category -> ResponseEntity.ok(category))
-				.orElse(ResponseEntity.notFound().build());
-	}
 
 }

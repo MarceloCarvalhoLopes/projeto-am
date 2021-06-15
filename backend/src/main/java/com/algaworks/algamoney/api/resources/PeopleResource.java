@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,11 +39,21 @@ public class PeopleResource {
 	private ApplicationEventPublisher applicationEventPublisher;
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('ROLE_SEARCH_PEOPLE') and #oauth2.hasScope('read')")
 	public List<People> findAll() {
 		return peopleRepository.findAll();
 	}
 
+	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('ROLE_SEARCH_PEOPLE') and #oauth2.hasScope('read')")
+	public ResponseEntity<People> findById(@PathVariable Long id) {
+		return peopleRepository.findById(id).map(people -> ResponseEntity.ok(people))
+				.orElse(ResponseEntity.notFound().build());
+	}
+	
+	
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_REGISTER_PEOPLE') and #oauth2.hasScope('write')")
 	public ResponseEntity<People> create(@Valid @RequestBody People people, HttpServletResponse response) {
 		People savedPeople = peopleRepository.save(people);
 
@@ -51,25 +62,23 @@ public class PeopleResource {
 		return ResponseEntity.status(HttpStatus.CREATED).body(savedPeople);
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<People> findById(@PathVariable Long id) {
-		return peopleRepository.findById(id).map(people -> ResponseEntity.ok(people))
-				.orElse(ResponseEntity.notFound().build());
-	}
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasAuthority('ROLE_DELETE_PEOPLE') and #oauth2.hasScope('write')")
 	public void remove(@PathVariable Long id) {
 		this.peopleRepository.deleteById(id);
 	}
 	
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('ROLE_REGISTER_PEOPLE') and #oauth2.hasScope('write')")
 	public ResponseEntity<People> update(@PathVariable Long id, @Valid @RequestBody People people){
 		People 	savedPeople = peopleService.update(id, people);
 		return ResponseEntity.ok(savedPeople);
 	}
 	
 	@PutMapping("/{id}/active")
+	@PreAuthorize("hasAuthority('ROLE_REGISTER_PEOPLE') and #oauth2.hasScope('write')")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void updatePropertyActive(@PathVariable Long id, @RequestBody Boolean active) {
 		peopleService.updatePropertyActive(id,active);
