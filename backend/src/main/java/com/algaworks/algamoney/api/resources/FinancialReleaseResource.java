@@ -31,6 +31,7 @@ import com.algaworks.algamoney.api.exceptionhander.AlgamoneyExceptionHandler.Err
 import com.algaworks.algamoney.api.models.FinancialRelease;
 import com.algaworks.algamoney.api.repositories.FinancialReleaseRepository;
 import com.algaworks.algamoney.api.repositories.filter.FinancialReleaseFilter;
+import com.algaworks.algamoney.api.repositories.projections.FinancialReleaseResume;
 import com.algaworks.algamoney.api.services.FinancialReleaseService;
 import com.algaworks.algamoney.api.services.exception.PeopleNonExistentOrInactive;
 
@@ -54,6 +55,12 @@ public class FinancialReleaseResource {
 	@PreAuthorize("hasAuthority('ROLE_SEARCH_FINANCIAL_RELEASE') and #oauth2.hasScope('read')")
 	public Page<FinancialRelease> find(FinancialReleaseFilter financialReleaseFilter, Pageable pageable  ){
 		return this.financialReleaseRepository.filter(financialReleaseFilter, pageable);
+	}
+	
+	@GetMapping(params = "resume")
+	@PreAuthorize("hasAuthority('ROLE_SEARCH_FINANCIAL_RELEASE') and #oauth2.hasScope('read')")
+	public Page<FinancialReleaseResume> resume(FinancialReleaseFilter financialReleaseFilter, Pageable pageable  ){
+		return this.financialReleaseRepository.resume(financialReleaseFilter, pageable);
 	}
 	
 	@GetMapping("/{id}")

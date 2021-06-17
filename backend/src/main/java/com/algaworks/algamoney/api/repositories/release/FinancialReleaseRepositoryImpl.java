@@ -16,9 +16,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.ObjectUtils;
 
+import com.algaworks.algamoney.api.models.Category_;
 import com.algaworks.algamoney.api.models.FinancialRelease;
 import com.algaworks.algamoney.api.models.FinancialRelease_;
+import com.algaworks.algamoney.api.models.People_;
 import com.algaworks.algamoney.api.repositories.filter.FinancialReleaseFilter;
+import com.algaworks.algamoney.api.repositories.projections.FinancialReleaseResume;
 
 public class FinancialReleaseRepositoryImpl implements FinancialReleaseRepositoryQuery {
 
@@ -40,6 +43,34 @@ public class FinancialReleaseRepositoryImpl implements FinancialReleaseRepositor
 		return new PageImpl<>(query.getResultList(), pageable, total(financialReleaseFilter));
 		
 	}
+	
+	@Override
+	public Page<FinancialReleaseResume> resume(FinancialReleaseFilter financialReleaseFilter, Pageable pageable) {
+		CriteriaBuilder builder = manager.getCriteriaBuilder();
+		CriteriaQuery<FinancialReleaseResume> criteria = builder.createQuery(FinancialReleaseResume.class);
+		Root<FinancialRelease> root = criteria.from(FinancialRelease.class);
+		
+		criteria.select(builder.construct(FinancialReleaseResume.class
+				,	root.get(FinancialRelease_.id)
+				,	root.get(FinancialRelease_.description)
+				,	root.get(FinancialRelease_.dueDate)
+				,	root.get(FinancialRelease_.paymentDate)
+				,	root.get(FinancialRelease_.value)
+				,	root.get(FinancialRelease_.type)
+				,	root.get(FinancialRelease_.category).get(Category_.name)
+				,	root.get(FinancialRelease_.people).get(People_.name)));
+
+		
+		
+		Predicate[] predicates = createRestriction(financialReleaseFilter, builder, root);
+		criteria.where(predicates);
+
+		TypedQuery<FinancialReleaseResume> query = manager.createQuery(criteria);
+		addPaginationRestriction(query, pageable);
+		
+		return new PageImpl<>(query.getResultList(), pageable, total(financialReleaseFilter));
+	}
+
 
 	private Predicate[] createRestriction(FinancialReleaseFilter financialReleaseFilter, CriteriaBuilder builder,
 			Root<FinancialRelease> root) {
@@ -64,7 +95,7 @@ public class FinancialReleaseRepositoryImpl implements FinancialReleaseRepositor
 		return predicates.toArray(new Predicate[predicates.size()]);
 	}
 	
-	private void addPaginationRestriction(TypedQuery<FinancialRelease> query, Pageable pageable) {
+	private void addPaginationRestriction(TypedQuery<?> query, Pageable pageable) {
 		int currentPage =  pageable.getPageNumber();
 		int totalRecordsPerPage = pageable.getPageSize();
 		int firstRecordOnThePage = currentPage * totalRecordsPerPage;
@@ -85,5 +116,6 @@ public class FinancialReleaseRepositoryImpl implements FinancialReleaseRepositor
 		
 		return manager.createQuery(criteria).getSingleResult();
 	}
+
 
 }
