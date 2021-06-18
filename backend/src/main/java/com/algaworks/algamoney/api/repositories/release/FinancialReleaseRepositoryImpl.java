@@ -77,11 +77,12 @@ public class FinancialReleaseRepositoryImpl implements FinancialReleaseRepositor
 
 		List<Predicate> predicates = new ArrayList<>();
 		
-		if (!ObjectUtils.isEmpty(financialReleaseFilter.getDescryption()) ) {
+		if (!ObjectUtils.isEmpty(financialReleaseFilter.getDescription()) ) {
 			predicates.add(builder.like(
-					builder.lower(root.get(FinancialRelease_.description)),"%" + financialReleaseFilter.getDescryption().toLowerCase() +"%"));
+					builder.lower(root.get(FinancialRelease_.description)),"%" + financialReleaseFilter.getDescription().toLowerCase() +"%"));
 		}
 
+		
 		if (financialReleaseFilter.getDueDateOf() != null) {
 			predicates.add(builder.greaterThanOrEqualTo(root.get(FinancialRelease_.dueDate), financialReleaseFilter.getDueDateOf()));	
 		}

@@ -32,6 +32,7 @@ import com.algaworks.algamoney.api.models.FinancialRelease;
 import com.algaworks.algamoney.api.repositories.FinancialReleaseRepository;
 import com.algaworks.algamoney.api.repositories.filter.FinancialReleaseFilter;
 import com.algaworks.algamoney.api.repositories.projections.FinancialReleaseResume;
+import com.algaworks.algamoney.api.repositories.release.FinancialReleaseRepositoryImpl;
 import com.algaworks.algamoney.api.services.FinancialReleaseService;
 import com.algaworks.algamoney.api.services.exception.PeopleNonExistentOrInactive;
 

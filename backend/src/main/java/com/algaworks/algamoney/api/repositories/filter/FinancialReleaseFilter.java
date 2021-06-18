@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class FinancialReleaseFilter {
 
-	private String descryption;
+	private String description;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dueDateOf;
@@ -14,11 +14,12 @@ public class FinancialReleaseFilter {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dueDateBy;
 	
-	public String getDescryption() {
-		return descryption;
+	
+	public String getDescription() {
+		return description;
 	}
-	public void setDescryption(String descryption) {
-		this.descryption = descryption;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public LocalDate getDueDateOf() {
 		return dueDateOf;
