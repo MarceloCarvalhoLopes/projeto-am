@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -32,7 +33,6 @@ import com.algaworks.algamoney.api.models.FinancialRelease;
 import com.algaworks.algamoney.api.repositories.FinancialReleaseRepository;
 import com.algaworks.algamoney.api.repositories.filter.FinancialReleaseFilter;
 import com.algaworks.algamoney.api.repositories.projections.FinancialReleaseResume;
-import com.algaworks.algamoney.api.repositories.release.FinancialReleaseRepositoryImpl;
 import com.algaworks.algamoney.api.services.FinancialReleaseService;
 import com.algaworks.algamoney.api.services.exception.PeopleNonExistentOrInactive;
 
@@ -80,6 +80,20 @@ public class FinancialReleaseResource {
 		applicationEventPublisher.publishEvent(new ResourceCreatedEvent(this, response, savedFinancial.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(savedFinancial);
 		
+	}
+	
+	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('ROLE_REGISTER_FINANCIAL_RELEASE') and #oauth2.hasScope('write')")
+	public ResponseEntity<FinancialRelease> update(@PathVariable Long id, @Valid @RequestBody FinancialRelease financialRelease){
+		
+		try {
+			FinancialRelease financialReleaseSaved =  financialReleaseService.update(id, financialRelease);
+			return ResponseEntity.ok(financialReleaseSaved);	
+		} catch (IllegalArgumentException  e) {
+			return ResponseEntity.notFound().build();
+		}
+		
+		 		
 	}
 	
 	@DeleteMapping("/{id}")
