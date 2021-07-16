@@ -2,6 +2,7 @@
   <form autocomplete="off">
 
     <div class="p-grid">
+
       <div class="p-col-12">
         <h1>Novo Lançamento</h1>
       </div>
@@ -25,21 +26,16 @@
       </div>
 
       <div class="p-col-12 p-md-9 p-fluid">
-        <!--label>Descrição</label-->
-        <label>Descrição {{descricao.errors | json}}</label>
+        <label>Descrição</label>
+        <!--label>Descrição {{descricao.errors | json}}</label-->
         <input pInputText type="text" name="descricao"
-         ngModel #descricao="ngModel" required minlength="5">
+          ngModel #descricao="ngModel" required minlength="5">
 
-         <div *ngIf="descricao.hasError('required') && descricao.dirty"
-          class="p-message p-message-error">
-          Informe uma descrição
-         </div>
+        <app-message [control]="descricao" error="required"
+          text="Informe uma descrição"></app-message>
 
-         <div *ngIf="descricao.hasError('minlength') && descricao.dirty"
-          class="p-message p-message-error">
-          Mínimo de {{ descricao.errors?.minlength?.requiredLength }} caracteres.
-         </div>
-
+        <app-message [control]="descricao" error="minlength"
+          text="Mínimo de {{ descricao.errors?.minlength?.requiredLength }} caracteres"></app-message>
       </div>
 
       <div class="p-col-6 p-md-3 p-fluid">
