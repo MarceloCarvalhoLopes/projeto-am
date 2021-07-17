@@ -1,5 +1,5 @@
 <div class="container">
-  <form autocomplete="off">
+  <form #f="ngForm" autocomplete="off">
 
     <div class="p-grid">
 
@@ -15,7 +15,13 @@
         <label>Vencimento</label>
         <p-calendar dateFormat="dd/mm/yy"
           [inline]="false" [readonlyInput]="false"
-          [showIcon]="false"></p-calendar>
+          [showIcon]="false" name="vencimento"
+          ngModel #vencimento="ngModel" required></p-calendar>
+
+          <app-message [control]="vencimento" error="required"
+          text="Informe uma data de vencimento"></app-message>
+
+
       </div>
 
       <div class="p-col-6 p-md-3 p-fluid">
@@ -42,17 +48,32 @@
         <label>Valor</label>
         <input pInputText type="text" placeholder="0,00" name="valor" currencyMask
         [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }"
-        ngModel>
+        ngModel #valor="ngModel" required>
+
+        <app-message [control]="valor" error="required"
+          text="Informe um valor"></app-message>
+
       </div>
 
       <div class="p-col-12 p-md-6 p-fluid">
-        <label>Categoria {{categoria.value}} </label>
-        <p-dropdown [options]="categorias" placeholder="Selecione" #categoria></p-dropdown>
+        <label>Categoria</label>
+        <!--label>Categoria {{categoria.value}} </label-->
+        <p-dropdown [options]="categorias" placeholder="Selecione" name="categoria"
+         ngModel #categoria="ngModel" required></p-dropdown>
+
+         <app-message [control]="categoria" error="required"
+           text="Informe uma categoria"></app-message>
       </div>
 
       <div class="p-col-12 p-md-6 p-fluid">
-        <label>Pessoa {{pessoa.value}} </label>
-        <p-dropdown [options]="pessoas" placeholder="Selecione" [filter]="true" #pessoa></p-dropdown>
+        <label>Pessoa</label>
+        <!--label>Pessoa {{pessoa.value}} </label-->
+        <p-dropdown [options]="pessoas" placeholder="Selecione" [filter]="true" name="pessoa"
+         ngModel #pessoa="ngModel" required></p-dropdown>
+
+         <app-message [control]="pessoa" error="required"
+           text="Informe uma pessoa"></app-message>
+
       </div>
 
       <div class="p-col-12 p-fluid">
@@ -61,7 +82,7 @@
       </div>
 
       <div class="p-col-12">
-        <button pButton type="submit" label="Salvar"> </button>
+        <button pButton type="submit" label="Salvar" [disabled]="!f.valid"> </button>
         <button pButton type="button" label="Novo" class="p-button-info"></button>
         <a href="javascript:;">Voltar para a pesquisa</a>
       </div>
