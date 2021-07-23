@@ -11,12 +11,12 @@ public class AlgamoneyApiProperty {
 		return security;
 	}
 	
-	
+
 	public static class Security{
 	
 		private boolean enableHttps;
 		
-		private String allowedOfOrigin;
+		private String allowedOfOrigin = "http://localhost:4200";
 
 		public boolean isEnableHttps() {
 			return enableHttps;
