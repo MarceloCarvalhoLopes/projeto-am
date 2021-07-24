@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 
 export class LancamentosPesquisaComponent implements OnInit {
 
-  lancamentos = [] ;
+  lancamentos =  [] ;
 
   constructor(private lancamentoService : LancamentoService){}
 

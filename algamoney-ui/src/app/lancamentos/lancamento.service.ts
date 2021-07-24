@@ -13,12 +13,14 @@ export class LancamentoService {
 
   search(): Promise<any>{
     const headers = new HttpHeaders()
-      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+    .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
 
-      return this.http.get(`${this.launchingsURL}?resume`,{ headers })
+      return this.http.get(`${this.launchingsURL}?resume`, { headers })
         .toPromise()
-        .then(response => response);
-        //.then(response => response['content']);
+        .then((response: any) => response['content']);
+
+        //.then((response: any) =>
+        //  console.log( response['content']));
   }
 
 

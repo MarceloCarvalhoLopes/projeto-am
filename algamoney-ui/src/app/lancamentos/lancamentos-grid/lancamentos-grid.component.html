@@ -14,24 +14,24 @@
   <tr>
     <td>
       <span class="p-column-title">Pessoa</span>
-      {{ lancamento.pessoa }}
+      {{ lancamento.people }}
     </td>
 
     <td>
       <span class="p-column-title">Descrição</span>
-      {{ lancamento.descricao }}
+      {{ lancamento.description }}
     </td>
     <td class="col-data-content">
       <span class="p-column-title">Vencimento</span>
-      {{ lancamento.dataVencimento | date:'dd/MM/yyyy' }}
+      {{ lancamento.dueDate | date:'dd/MM/yyyy' }}
     </td>
     <td class="col-data-content">
       <span class="p-column-title">Pagamento</span>
-      {{ lancamento.dataPagamento | date:'dd/MM/yyyy' }}
+      {{ lancamento.paymentDate | date:'dd/MM/yyyy' }}
     </td>
-    <td class="col-valor-content" [style.color]="lancamento.tipo === 'DESPESA'? 'red' : 'blue'">
+    <td class="col-valor-content" [style.color]="lancamento.type === 'EXPENSE'? 'red' : 'blue'">
       <span class="p-column-title">Valor</span>
-      {{ lancamento.valor | number:'1.2-2' }}
+      {{ lancamento.value | number:'1.2-2' }}
     </td>
 
     <td class="col-acoes">
