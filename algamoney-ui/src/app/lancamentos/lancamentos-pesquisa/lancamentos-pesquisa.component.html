@@ -1,32 +1,78 @@
 <div class="container">
+    <form autocomplete="off" (ngSubmit)="search()">
+      <div class="p-grid">
+        <div class="p-col-12">
+          <h1>Lançamentos</h1>
+        </div>
+
+        <div class="p-col-12 p-fluid">
+          <label>Descrição</label>
+          <input pInputText type="text" name="description"
+            [(ngModel)]="description">
+
+        </div>
+
+        <div class="p-col-12">
+          <label style="display: block">Vencimento</label>
+          <input pInputText type="text" style="width: 95px">
+
+          <label> até </label>
+          <input pInputText type="text" style="width: 95px">
+        </div>
+
+        <div class="p-col-12">
+          <button pButton type="submit" label="Pesquisar"></button>
+        </div>
+      </div>
+    </form>
+
   <div class="p-grid">
-
     <div class="p-col-12">
-      <h1>Lançamentos</h1>
-    </div>
 
-    <div class="p-col-12 p-fluid">
-      <label>Descrição</label>
-      <input pInputText type="text">
-    </div>
+      <p-table [value]="lancamentos" styleClass="p-datatable-gridlines" [paginator]="true" [rows]="3"
+      [responsive]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Pessoa</th>
+          <th>Descrição</th>
+          <th class="col-data-header">Vencimento</th>
+          <th class="col-data-header">Pagamento</th>
+          <th class="col-valor-header">Valor</th>
+          <th class="col-acoes-header"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-lancamento>
+        <tr>
+          <td>
+            <span class="p-column-title">Pessoa</span>
+            {{ lancamento.people }}
+          </td>
 
-    <div class="p-col-12">
-      <label style="display: block">Vencimento</label>
-      <input pInputText type="text" style="width: 95px">
+          <td>
+            <span class="p-column-title">Descrição</span>
+            {{ lancamento.description }}
+          </td>
+          <td class="col-data-content">
+            <span class="p-column-title">Vencimento</span>
+            {{ lancamento.dueDate | date:'dd/MM/yyyy' }}
+          </td>
+          <td class="col-data-content">
+            <span class="p-column-title">Pagamento</span>
+            {{ lancamento.paymentDate | date:'dd/MM/yyyy' }}
+          </td>
+          <td class="col-valor-content" [style.color]="lancamento.type === 'EXPENSE'? 'red' : 'blue'">
+            <span class="p-column-title">Valor</span>
+            {{ lancamento.value | number:'1.2-2' }}
+          </td>
 
-      <label> até </label>
-      <input pInputText type="text" style="width: 95px">
-    </div>
-
-    <div class="p-col-12">
-      <button pButton type="submit" label="Pesquisar"></button>
-    </div>
-
-  </div>
-
-  <div class="p-grid">
-    <div class="p-col-12">
-      <app-lancamentos-grid [lancamentos]="lancamentos"></app-lancamentos-grid>
+          <td class="col-acoes">
+            <span class="p-column-title"></span>
+            <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"></a>
+            <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"></button>
+          </td>
+        </tr>
+      </ng-template>
+      </p-table>
     </div>
 
     <div class="p-col-12">
@@ -36,4 +82,3 @@
   </div>
 
 </div>
-

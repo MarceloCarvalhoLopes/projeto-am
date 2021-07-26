@@ -1,6 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+
+export interface LauchingFilter{
+  description : string ;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +15,17 @@ export class LancamentoService {
 
   constructor(private http: HttpClient) { }
 
-  search(): Promise<any>{
+  search(filter: LauchingFilter): Promise<any>{
     const headers = new HttpHeaders()
-    .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
 
-      return this.http.get(`${this.launchingsURL}?resume`, { headers })
+      let params = new HttpParams();
+
+      if (filter.description){
+        params = params.set('description', filter.description);
+      }
+
+      return this.http.get(`${this.launchingsURL}?resume`, { headers, params })
         .toPromise()
         .then((response: any) => response['content']);
 
