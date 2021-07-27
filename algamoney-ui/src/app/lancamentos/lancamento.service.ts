@@ -1,9 +1,12 @@
 import { HttpClient, HttpHeaders, HttpParams  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { format } from 'date-fns';
 
 
 export interface LauchingFilter{
   description : string ;
+  dueDateOf: Date ;
+  dueDateBy:  Date ;
 }
 
 @Injectable({
@@ -23,6 +26,14 @@ export class LancamentoService {
 
       if (filter.description){
         params = params.set('description', filter.description);
+      }
+
+      if (filter.dueDateOf){
+        params = params.set('dueDateOf', format(filter.dueDateOf,'yyyy-MM-dd'));
+      }
+
+      if (filter.dueDateBy){
+        params = params.set('dueDateBy', format(filter.dueDateBy,'yyyy-MM-dd'));
       }
 
       return this.http.get(`${this.launchingsURL}?resume`, { headers, params })

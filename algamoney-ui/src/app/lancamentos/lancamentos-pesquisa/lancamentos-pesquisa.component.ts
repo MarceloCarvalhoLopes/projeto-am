@@ -1,4 +1,4 @@
-import { LancamentoService } from './../lancamento.service';
+import { LancamentoService, LauchingFilter } from './../lancamento.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -10,6 +10,8 @@ import { Component, OnInit } from '@angular/core';
 export class LancamentosPesquisaComponent implements OnInit {
 
   description: string = '';
+  dueDateOf!: Date;
+  dueDateBy!:  Date;
   lancamentos =  [] ;
 
   constructor(private lancamentoService : LancamentoService){}
@@ -19,7 +21,15 @@ export class LancamentosPesquisaComponent implements OnInit {
   }
 
   search() {
-    this.lancamentoService.search({description: this.description  })
+
+    const filter: LauchingFilter = {
+      description: this.description,
+      dueDateOf: this.dueDateOf,
+      dueDateBy: this.dueDateBy
+    };
+
+
+    this.lancamentoService.search(filter)
       .then(lancamentos => this.lancamentos = lancamentos);
   }
 
