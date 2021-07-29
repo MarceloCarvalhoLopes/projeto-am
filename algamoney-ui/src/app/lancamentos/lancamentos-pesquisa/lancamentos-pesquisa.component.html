@@ -8,18 +8,18 @@
         <div class="p-col-12 p-fluid">
           <label>Descrição</label>
           <input pInputText type="text" name="description"
-            [(ngModel)]="description">
+            [(ngModel)]="filter.description">
 
         </div>
 
         <div class="p-col-12">
           <label style="display: block">Vencimento</label>
           <p-calendar dateFormat="dd/mm/yy"  [inputStyle]="{ width: '100px' }"
-          name="dueDateOf" [(ngModel)]="dueDateOf"> </p-calendar>
+          name="dueDateOf" [(ngModel)]="filter.dueDateOf"> </p-calendar>
 
           <label> até </label>
           <p-calendar dateFormat="dd/mm/yy"  [inputStyle]="{ width: '100px' }"
-          name="dueDateBy" [(ngModel)]="dueDateBy"> </p-calendar>
+          name="dueDateBy" [(ngModel)]="filter.dueDateBy"> </p-calendar>
         </div>
 
         <div class="p-col-12">
@@ -31,8 +31,10 @@
   <div class="p-grid">
     <div class="p-col-12">
 
-      <p-table [value]="lancamentos" styleClass="p-datatable-gridlines" [paginator]="true" [rows]="3"
-      [responsive]="true">
+      <p-table [value]="lancamentos" styleClass="p-datatable-gridlines" [paginator]="true" [responsive]="true"
+      [rows]="filter.itemsPerPage" [lazy]="true" [totalRecords]="totalRecords"
+      (onLazyLoad)="onPageChange($event)">
+
       <ng-template pTemplate="emptymessage">
         <tr>
           <td colspan="6">

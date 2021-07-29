@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
+
 @Component({
   selector: 'app-pessoas-grid',
   templateUrl: './pessoas-grid.component.html',
@@ -7,6 +8,6 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class PessoasGridComponent  {
 
-  @Input()  pessoas = [];
+  @Input()  pessoas: [] = [];
 
 }

@@ -3,10 +3,12 @@ import { Injectable } from '@angular/core';
 import { format } from 'date-fns';
 
 
-export interface LauchingFilter{
-  description : string ;
-  dueDateOf: Date ;
-  dueDateBy:  Date ;
+export class LauchingFilter{
+  description : string = '';
+  dueDateOf?: Date ;
+  dueDateBy?:  Date ;
+  page = 0;
+  itemsPerPage = 5;
 }
 
 @Injectable({
@@ -24,6 +26,9 @@ export class LancamentoService {
 
       let params = new HttpParams();
 
+      params = params.set('page', filter.page.toString());
+      params = params.set('size', filter.itemsPerPage.toString());
+
       if (filter.description){
         params = params.set('description', filter.description);
       }
@@ -38,7 +43,17 @@ export class LancamentoService {
 
       return this.http.get(`${this.launchingsURL}?resume`, { headers, params })
         .toPromise()
-        .then((response: any) => response['content']);
+        .then((response : any)  => {
+           const launchings = response['content']
+           //console.log (launchings);
+
+           const result = {
+            launchings,
+            total: response['totalElements']
+           };
+
+           return result;
+          });
 
         //.then((response: any) =>
         //  console.log( response['content']));
