@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders, HttpParams  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { format } from 'date-fns';
 
-
 export class LauchingFilter{
   description : string = '';
   dueDateOf?: Date ;
