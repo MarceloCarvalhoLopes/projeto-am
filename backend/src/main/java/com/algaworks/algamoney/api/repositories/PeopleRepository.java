@@ -8,5 +8,5 @@ import com.algaworks.algamoney.api.models.People;
 
 public interface PeopleRepository extends JpaRepository<People, Long> {
 	
-	public Page<People> findByName(String name, Pageable pageable);
+	public Page<People> findByNameContaining(String name, Pageable pageable);
 }

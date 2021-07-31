@@ -42,8 +42,8 @@ public class PeopleResource {
 	
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_SEARCH_PEOPLE') and #oauth2.hasScope('read')")
-	public Page<People> findByName(@RequestParam(required = false, defaultValue = "%") String name, Pageable pageable) {
-		return peopleRepository.findByName(name, pageable);
+	public Page<People> findByName(@RequestParam(required = false, defaultValue = "") String name, Pageable pageable) {
+		return peopleRepository.findByNameContaining(name, pageable);
 	}
 	
 //	@GetMapping
