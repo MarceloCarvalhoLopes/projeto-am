@@ -33,7 +33,7 @@
 
       <p-table [value]="lancamentos" styleClass="p-datatable-gridlines" [paginator]="true" [responsive]="true"
       [rows]="filter.itemsPerPage" [lazy]="true" [totalRecords]="totalRecords"
-      (onLazyLoad)="onPageChange($event)">
+      (onLazyLoad)="onPageChange($event)" #table>
 
       <ng-template pTemplate="emptymessage">
         <tr>
@@ -80,7 +80,8 @@
           <td class="col-acoes">
             <span class="p-column-title"></span>
             <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"></a>
-            <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"></button>
+            <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"
+              (click)="delete(lancamento)"></button>
           </td>
         </tr>
       </ng-template>
