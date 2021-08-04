@@ -1,4 +1,3 @@
-import { LancamentoService } from './lancamentos/lancamento.service';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -8,8 +7,15 @@ import { AppComponent } from './app.component';
 
 import { PessoasModule } from './pessoas/pessoas.module';
 import { LancamentosModule } from './lancamentos/lancamentos.module';
+import { PessoaService } from './pessoas/pessoa.service';
+import { LancamentoService } from './lancamentos/lancamento.service';
+
 import { CoreModule } from './core/core.module';
 import { HttpClientModule } from '@angular/common/http';
+
+import {ToastModule} from 'primeng/toast';
+import {MessageService} from 'primeng/api';
+
 
 @NgModule({
   declarations: [
@@ -22,13 +28,18 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     HttpClientModule,
 
+    ToastModule,
 
     LancamentosModule,
     PessoasModule,
     CoreModule
 
   ],
-  providers: [LancamentoService],
+  providers: [MessageService,
+
+    LancamentoService,
+    PessoaService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
