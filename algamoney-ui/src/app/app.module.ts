@@ -15,6 +15,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import {ToastModule} from 'primeng/toast';
 import {MessageService} from 'primeng/api';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmationService} from 'primeng/api';
 
 
 @NgModule({
@@ -29,13 +31,14 @@ import {MessageService} from 'primeng/api';
     HttpClientModule,
 
     ToastModule,
+    ConfirmDialogModule,
 
     LancamentosModule,
     PessoasModule,
     CoreModule
 
   ],
-  providers: [MessageService,
+  providers: [MessageService, ConfirmationService,
 
     LancamentoService,
     PessoaService
