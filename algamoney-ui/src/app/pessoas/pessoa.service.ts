@@ -53,4 +53,26 @@ export class PessoaService {
       .then((response : any) => response['content']);
 
   }
+
+  delete(id: number): Promise<any>{
+    const headers = new HttpHeaders()
+    .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+
+    return this.http.delete(`${this.peopleUrl}/${id}`, { headers })
+      .toPromise()
+      .then(() => null);
+
+  }
+
+  changeStatus(id: number, active: boolean): Promise<void>{
+    const headers = new HttpHeaders()
+    .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==')
+    .append('Content-Type', 'application/json');
+
+    return this.http.put(`${this.peopleUrl}/${id}/active`, active, { headers })
+      .toPromise()
+      .then(() => null);
+
+  }
+
 }

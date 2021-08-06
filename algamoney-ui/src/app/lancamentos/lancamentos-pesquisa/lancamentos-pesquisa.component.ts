@@ -22,7 +22,7 @@ export class LancamentosPesquisaComponent implements OnInit {
   constructor(
     private lancamentoService : LancamentoService,
     private messageService : MessageService,
-    private confirmation : ConfirmationService,
+    private confirmationService : ConfirmationService,
     private errorHandlerService : ErrorHandlerService
     ){}
 
@@ -57,7 +57,7 @@ export class LancamentosPesquisaComponent implements OnInit {
   }
 
   confirmDeletion(lancamento: any) {
-    this.confirmation.confirm({
+    this.confirmationService.confirm({
       message: 'Tem certeza que deseja excluir?',
       accept: () => {
         this.delete(lancamento);
