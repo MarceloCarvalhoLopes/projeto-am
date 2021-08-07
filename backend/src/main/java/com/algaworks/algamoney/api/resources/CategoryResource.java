@@ -33,10 +33,15 @@ public class CategoryResource {
 
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_SEARCH_CATEGORY') and #oauth2.hasScope('read')")
-	public List<Category> findAll() {
-		return categoryRepository.findAll();
+	public ResponseEntity<List<Category>> findAll() {
+		List<Category> categories = categoryRepository.findAll(); 
+		return ResponseEntity.ok().body(categories);
 	}
 
+//	public List<Category> findAll(){
+//		return categoryRepository.findAll();
+//	}
+	
 	@GetMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_SEARCH_CATEGORY') and #oauth2.hasScope('read')")
 	public ResponseEntity<Category> findById(@PathVariable Long id) {

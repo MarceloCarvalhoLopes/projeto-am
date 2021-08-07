@@ -25,8 +25,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 				.antMatchers("/categories").permitAll()
 				.anyRequest().authenticated()
 				.and()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			.csrf().disable();
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+				.csrf().disable();
 	}
 
 	@Override
