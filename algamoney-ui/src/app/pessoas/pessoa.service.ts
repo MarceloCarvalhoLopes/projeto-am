@@ -44,7 +44,7 @@ export class PessoaService {
 
   }
 
-  searchAll(): Promise<any>{
+  listAll(): Promise<any>{
     const headers = new HttpHeaders()
       .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
 
