@@ -30,11 +30,11 @@ public class FinancialRelease {
 	
 	@NotNull
 	@Column(name= "DUE_DATE")
-	@JsonFormat(pattern =  "dd/MM/yyyy")
+	//@JsonFormat(pattern =  "dd/MM/yyyy")
 	private LocalDate dueDate;
 	
 	@Column(name= "PAYMENT_DATE")
-	@JsonFormat(pattern =  "dd/MM/yyyy")
+	//@JsonFormat(pattern =  "dd/MM/yyyy")
 	private LocalDate paymentDate;
 	
 	@NotNull

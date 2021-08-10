@@ -1,3 +1,5 @@
+import { People } from './../core/model';
+import { FormControl } from '@angular/forms';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -51,6 +53,17 @@ export class PessoaService {
       return this.http.get(`${this.peopleUrl}`,{ headers })
       .toPromise()
       .then((response : any) => response['content']);
+
+  }
+
+  create(people:People): Promise<People>{
+
+    const headers = new HttpHeaders()
+    .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==')
+    .append('Content-Type', 'application/json');
+
+    return this.http.post<People>( this.peopleUrl, people ,{ headers })
+    .toPromise();
 
   }
 

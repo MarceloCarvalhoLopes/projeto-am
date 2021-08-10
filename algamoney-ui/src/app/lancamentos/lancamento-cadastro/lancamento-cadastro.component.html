@@ -1,5 +1,5 @@
 <div class="container">
-  <form #f="ngForm" autocomplete="off" (ngSubmit)="save(f)">
+  <form #f="ngForm" autocomplete="off" (ngSubmit)="create(f)">
 
     <div class="p-grid">
 
@@ -58,7 +58,7 @@
       <div class="p-col-12 p-md-6 p-fluid">
         <label>Categoria</label>
         <!--label>Categoria {{categoria.value}} </label-->
-        <p-dropdown [options]="categorias" placeholder="Selecione" name="category"
+        <p-dropdown [options]="category" placeholder="Selecione" name="category"
          ngModel #categoria="ngModel" required  [(ngModel)] ="launching.category.id"></p-dropdown>
 
          <app-message [control]="categoria" error="required"
@@ -68,8 +68,8 @@
       <div class="p-col-12 p-md-6 p-fluid">
         <label>Pessoa</label>
         <!--label>Pessoa {{pessoa.value}} </label-->
-        <p-dropdown [options]="pessoas" placeholder="Selecione" [filter]="true" name="person"
-         ngModel #pessoa="ngModel" required [(ngModel)] ="launching.person.id"></p-dropdown>
+        <p-dropdown [options]="people" placeholder="Selecione" [filter]="true" name="people"
+         ngModel #pessoa="ngModel" required [(ngModel)] ="launching.people.id"></p-dropdown>
 
          <app-message [control]="pessoa" error="required"
            text="Informe uma pessoa"></app-message>

@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { format } from 'date-fns';
+import { Launching } from './../core/model';
 
 export class LauchingFilter{
   description : string = '';
@@ -67,6 +68,13 @@ export class LancamentoService {
       .then(() => null);
   }
 
+  create(launching:Launching): Promise<Launching> {
+    const headers = new HttpHeaders()
+    .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==')
+    .append('Content-Type', 'application/json');
 
+    return this.http.post<Launching>(this.launchingsURL,launching,{ headers })
+    .toPromise();
+  }
 
 }

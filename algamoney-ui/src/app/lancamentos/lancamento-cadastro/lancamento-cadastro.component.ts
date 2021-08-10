@@ -1,15 +1,12 @@
+import { MessageService } from 'primeng/api';
 import { FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { CategoriaService } from './../../categorias/categoria.service';
 import { PessoaService } from './../../pessoas/pessoa.service';
-import { Launching } from './../../core/model';
-
-export interface Categoria {
-  id: number,
-  name: string
-}
+import { LancamentoService } from './../lancamento.service';
+import { Launching, Category, People } from './../../core/model';
 
 export interface Pessoa{
   id: number,
@@ -29,14 +26,19 @@ export class LancamentoCadastroComponent implements OnInit {
     { label: 'Despesa', value: 'EXPENSE' },
   ];
 
-  categorias = [] = [];
-  pessoas = [] = [];
+  //categorias = [] = [];
+  category = new Category;
+  //pessoas = [] = [];
+  people = new People;
   launching = new Launching;
 
   constructor(
     private categoriaService : CategoriaService,
+    private pessoaService : PessoaService,
+    private lancamentoService : LancamentoService,
+    private messageService : MessageService,
     private errorHandlerService : ErrorHandlerService,
-    private pessoaService : PessoaService
+
   ) { }
 
   ngOnInit(): void {
@@ -44,22 +46,30 @@ export class LancamentoCadastroComponent implements OnInit {
     this.loadPeople();
   }
 
-  save(form: FormControl ){
-    console.log(this.launching);
+  create(form: FormControl ){
+    //console.log(this.launching);
+    this.lancamentoService.create(this.launching)
+      .then(() => {
+        this.messageService.add({ severity: 'success', detail: 'Lançamento adicionado com sucesso!' });
+        form.reset();
+        this.launching = new Launching();
+      })
+      .catch(erro => this.errorHandlerService.handle(erro));
+
   }
 
   loadCategories(){
     return this.categoriaService.listAll()
-    .then(categorias => {
-      this.categorias = categorias.map((c: Categoria) =>  ({ label: c.name, value: c.id}));
+    .then(category => {
+      this.category = category.map((c: Category) =>  ({ label: c.name, value: c.id}));
     })
     .catch(erro => this.errorHandlerService.handle(erro));
   }
 
   loadPeople(){
     this.pessoaService.listAll()
-    .then(pessoas => {
-      this.pessoas = pessoas.map((p: Pessoa) => ({label : p.name, value: p.id }));
+    .then(people => {
+      this.people = people.map((p: People) => ({label : p.name, value: p.id }));
     })
     .catch(erro => this.errorHandlerService.handle(erro));
   }

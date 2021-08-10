@@ -23,7 +23,7 @@
 
   <div class="p-grid">
     <div class="p-col-12">
-      <p-table [value]="pessoas" styleClass="p-datatable-gridlines" [paginator]="true" [responsive]="true"
+      <p-table [value]="people" styleClass="p-datatable-gridlines" [paginator]="true" [responsive]="true"
       [rows]="filter.itemsPerPage" [lazy]="true" [lazyLoadOnInit]="true" [totalRecords]="totalRecords"
       (onLazyLoad)="onPageChange($event)"  #table>
 
