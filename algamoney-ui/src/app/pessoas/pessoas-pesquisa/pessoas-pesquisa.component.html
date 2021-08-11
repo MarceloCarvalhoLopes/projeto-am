@@ -23,8 +23,8 @@
 
   <div class="p-grid">
     <div class="p-col-12">
-      <p-table [value]="people" styleClass="p-datatable-gridlines" [paginator]="true" [responsive]="true"
-      [rows]="filter.itemsPerPage" [lazy]="true" [lazyLoadOnInit]="true" [totalRecords]="totalRecords"
+      <p-table [value]="people" styleClass="p-datatable-gridlines" [responsive]="true" [paginator]="true"
+      [rows]="filter.itemsPerPage" [lazy]="true" [totalRecords]="totalRecords"
       (onLazyLoad)="onPageChange($event)"  #table>
 
         <ng-template pTemplate="header">

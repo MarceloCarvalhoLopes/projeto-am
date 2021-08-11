@@ -5,7 +5,6 @@ import { Table } from 'primeng/table';
 
 import { PeopleFilter,PessoaService } from './../pessoa.service';
 import { ErrorHandlerService } from './../../core/error-handler.service';
-import { People } from 'src/app/core/model';
 
 @Component({
   selector: 'app-pessoas-pesquisa',
@@ -16,7 +15,7 @@ export class PessoasPesquisaComponent implements OnInit {
 
   totalRecords = 0;
   filter = new PeopleFilter();
-  people = new People;
+  people = [] = [];
   @ViewChild('table') grid: Table;
 
   constructor(
