@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import { Launching } from './../core/model';
 
 export class LauchingFilter{
@@ -77,4 +77,45 @@ export class LancamentoService {
     .toPromise();
   }
 
+  update(launching:Launching): Promise<Launching> {
+    const headers = new HttpHeaders()
+    .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==')
+    .append('Content-Type', 'application/json');
+
+    return this.http.put<Launching>(`${this.launchingsURL}/${launching.id}`,launching, { headers })
+      .toPromise()
+      .then( response => {
+        const updatedLaunching = response;
+
+        this.convertStringsToDate([updatedLaunching]);
+
+        return updatedLaunching;
+    });
+  }
+
+  findById(id: number): Promise<Launching>{
+    const headers = new HttpHeaders()
+    .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+
+    return this.http.get<Launching>(`${this.launchingsURL}/${id}`, { headers })
+      .toPromise()
+      .then(response => {
+        const lauching = response;
+        this.convertStringsToDate([lauching]);
+
+        return lauching;
+      });
+
+  }
+
+  private convertStringsToDate(launchings :Launching[]){
+    for( const launching of launchings){
+
+      launching.dueDate = parse(launching.dueDate.toString(),'yyyy-MM-dd', new Date());
+      launching.paymentDate = launching.paymentDate ? parse(launching.paymentDate.toString(),'yyyy-MM-dd', new Date()) : null;
+
+
+    }
+  }
 }
+
