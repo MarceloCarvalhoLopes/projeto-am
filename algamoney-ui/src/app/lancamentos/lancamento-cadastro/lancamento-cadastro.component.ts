@@ -1,6 +1,6 @@
 import { FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { MessageService } from 'primeng/api';
 
@@ -41,7 +41,8 @@ export class LancamentoCadastroComponent implements OnInit {
     private lancamentoService : LancamentoService,
     private messageService : MessageService,
     private errorHandlerService : ErrorHandlerService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -80,10 +81,12 @@ export class LancamentoCadastroComponent implements OnInit {
   create(form: FormControl ){
     //console.log(this.launching);
     this.lancamentoService.create(this.launching)
-      .then(() => {
+      .then(savedLauching => {
         this.messageService.add({ severity: 'success', detail: 'Lançamento adicionado com sucesso!' });
-        form.reset();
-        this.launching = new Launching();
+        //form.reset();
+        //this.launching = new Launching();
+
+        this.router.navigate(['/lancamentos',savedLauching.id]);
       })
       .catch(erro => this.errorHandlerService.handle(erro));
 
@@ -112,6 +115,11 @@ export class LancamentoCadastroComponent implements OnInit {
       this.people = people.map((p: People) => ({label : p.name, value: p.id }));
     })
     .catch(erro => this.errorHandlerService.handle(erro));
+  }
+
+  new(form: FormControl){
+    form.reset(new Launching());
+    this.router.navigate(['/lancamentos/novo']);
   }
 
 }

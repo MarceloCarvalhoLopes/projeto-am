@@ -13,11 +13,6 @@ import { PessoaCadastroComponent } from './pessoa-cadastro/pessoa-cadastro.compo
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [
-    PessoaCadastroComponent,
-    PessoasPesquisaComponent
-
-  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -30,9 +25,10 @@ import { SharedModule } from '../shared/shared.module';
 
     SharedModule
   ],
-  exports:[
+  declarations: [
     PessoaCadastroComponent,
     PessoasPesquisaComponent
-  ]
+  ],
+  exports:[]
 })
 export class PessoasModule { }

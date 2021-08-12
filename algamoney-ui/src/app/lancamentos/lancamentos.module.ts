@@ -23,10 +23,7 @@ import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
-  declarations: [
-    LancamentoCadastroComponent,
-    LancamentosPesquisaComponent
-  ],
+
   imports: [
     CommonModule,
     FormsModule,
@@ -44,11 +41,12 @@ import { SharedModule } from '../shared/shared.module';
     NgxCurrencyModule,
 
     SharedModule
-
   ],
-  exports:[
+  declarations: [
     LancamentoCadastroComponent,
     LancamentosPesquisaComponent
-  ]
+  ],
+
+  exports:[]
 })
 export class LancamentosModule { }
