@@ -5,6 +5,7 @@ import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api'
 import { Table } from 'primeng/table';
 
 import { LancamentoService, LauchingFilter } from './../lancamento.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-lancamentos-pesquisa',
@@ -23,11 +24,13 @@ export class LancamentosPesquisaComponent implements OnInit {
     private lancamentoService : LancamentoService,
     private messageService : MessageService,
     private confirmationService : ConfirmationService,
-    private errorHandlerService : ErrorHandlerService
+    private errorHandlerService : ErrorHandlerService,
+    private title : Title
     ){}
 
   ngOnInit() {
     //this.search();
+    this.title.setTitle('Pesquisa de Lançamentos');
   }
 
   search(page = 0) {
