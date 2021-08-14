@@ -31,9 +31,8 @@ import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component'
     ConfirmDialogModule
   ],
   providers:[
-
-
     { provide: LOCALE_ID, useValue: 'pt-BR' },
+
     MessageService,
     ConfirmationService,
     Title,
