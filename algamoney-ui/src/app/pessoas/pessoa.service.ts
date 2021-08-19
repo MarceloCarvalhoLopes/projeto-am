@@ -1,8 +1,7 @@
-import { People } from './../core/model';
-import { FormControl } from '@angular/forms';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { People } from './../core/model';
 
 export class PeopleFilter{
   name : string = '';
@@ -87,5 +86,23 @@ export class PessoaService {
       .then(() => null);
 
   }
+
+  update(people : People): Promise<People> {
+    const headers = new HttpHeaders()
+      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==')
+      .append('Content-Type', 'application/json');
+
+     return this.http.put<People>(`${this.peopleUrl}/${people.id}`,people, { headers })
+      .toPromise();
+  }
+
+  findById(id : number) : Promise<People>{
+    const headers = new HttpHeaders()
+    .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
+
+    return this.http.get<People>(`${this.peopleUrl}/${id}`, { headers })
+      .toPromise();
+  }
+
 
 }

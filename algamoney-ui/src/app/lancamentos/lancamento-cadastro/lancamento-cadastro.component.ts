@@ -75,14 +75,6 @@ export class LancamentoCadastroComponent implements OnInit {
       .catch(erro => this.errorHandlerService.handle(erro));
   }
 
-  save(form: FormControl  ){
-    if (this.editing){
-      this.update(form);
-    }else{
-      this.create(form)
-    }
-  }
-
   create(form: FormControl ){
     //console.log(this.launching);
     this.lancamentoService.create(this.launching)
@@ -129,7 +121,16 @@ export class LancamentoCadastroComponent implements OnInit {
   }
 
   updateTitleEdition(){
-    this.title.setTitle(`Edição de lançamenot: ${this.launching.description}`);
+    this.title.setTitle(`Edição de lançamento: ${this.launching.description}`);
   }
+
+  save(form: FormControl  ){
+    if (this.editing){
+      this.update(form);
+    }else{
+      this.create(form)
+    }
+  }
+
 
 }

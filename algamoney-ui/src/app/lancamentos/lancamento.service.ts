@@ -110,10 +110,8 @@ export class LancamentoService {
 
   private convertStringsToDate(launchings :Launching[]){
     for( const launching of launchings){
-
       launching.dueDate = parse(launching.dueDate.toString(),'yyyy-MM-dd', new Date());
       launching.paymentDate = launching.paymentDate ? parse(launching.paymentDate.toString(),'yyyy-MM-dd', new Date()) : null;
-
 
     }
   }
