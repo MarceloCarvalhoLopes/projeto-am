@@ -11,6 +11,6 @@ export class AppComponent {
   constructor(private router: Router){}
 
   showNavBar(){
-    return this.router.url !=='login';
+    return this.router.url !=='/login';
   }
 }

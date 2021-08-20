@@ -9,8 +9,6 @@ import { ButtonModule } from 'primeng/button';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { SegurancaRoutingModule } from './seguranca-routing.module';
 
-
-
 @NgModule({
   imports: [
     CommonModule,

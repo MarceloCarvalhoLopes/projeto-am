@@ -1,3 +1,4 @@
+import { SegurancaModule } from './seguranca/seguranca.module';
 import { SegurancaRoutingModule } from './seguranca/seguranca-routing.module';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -30,7 +31,7 @@ registerLocaleData(localePt);
     CoreModule,
     LancamentosModule,
     PessoasModule,
-    SegurancaRoutingModule,
+    SegurancaModule,
     AppRoutingModule
 
   ],
