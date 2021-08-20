@@ -10,11 +10,9 @@ import { Component, OnInit } from '@angular/core';
   styles: [
   ]
 })
-export class PaginaNaoEncontradaComponent implements OnInit {
+export class PaginaNaoEncontradaComponent  {
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
 
 }

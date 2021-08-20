@@ -1,3 +1,4 @@
+import { SegurancaRoutingModule } from './seguranca/seguranca-routing.module';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -29,7 +30,9 @@ registerLocaleData(localePt);
     CoreModule,
     LancamentosModule,
     PessoasModule,
+    SegurancaRoutingModule,
     AppRoutingModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]
