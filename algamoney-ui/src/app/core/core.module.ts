@@ -13,6 +13,7 @@ import { ErrorHandlerService } from './error-handler.service';
 import { LancamentoService } from '../lancamentos/lancamento.service';
 import { PessoaService } from '../pessoas/pessoa.service';
 import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component';
+import { AuthService } from '../seguranca/auth.service';
 
 
 
@@ -39,7 +40,8 @@ import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component'
 
     LancamentoService,
     PessoaService,
-    ErrorHandlerService
+    ErrorHandlerService,
+    AuthService
 
   ]
 })
