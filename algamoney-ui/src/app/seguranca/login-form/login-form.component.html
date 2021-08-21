@@ -20,7 +20,7 @@
 
       <div class="p-col-12">
         <button pButton type="submit" label="Login" [disabled]="!f.valid"
-          (click)="login(user.value, password.value)"></button>
+          (click)="login(user.value, password.value); password.value = ''; "></button>
       </div>
 
     </div>
