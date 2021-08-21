@@ -19,8 +19,6 @@ export class PessoaService {
   constructor( private http: HttpClient) { }
 
   search(filter: PeopleFilter): Promise<any>  {
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
 
     let params =  new HttpParams();
 
@@ -31,7 +29,7 @@ export class PessoaService {
       params = params.set('name', filter.name);
     }
 
-    return this.http.get(`${this.peopleUrl}`,{headers,params})
+    return this.http.get(`${this.peopleUrl}`,{ params })
       .toPromise()
       .then((response : any) =>{
         const people = response['content']
@@ -46,61 +44,39 @@ export class PessoaService {
   }
 
   listAll(): Promise<any>{
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
-
-      return this.http.get(`${this.peopleUrl}`,{ headers })
+    return this.http.get(`${this.peopleUrl}`)
       .toPromise()
       .then((response : any) => response['content']);
 
   }
 
   create(people:People): Promise<People>{
-
-    const headers = new HttpHeaders()
-    .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==')
-    .append('Content-Type', 'application/json');
-
-    return this.http.post<People>( this.peopleUrl, people ,{ headers })
+    return this.http.post<People>( this.peopleUrl, people )
     .toPromise();
 
   }
 
   delete(id: number): Promise<any>{
-    const headers = new HttpHeaders()
-    .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
-
-    return this.http.delete(`${this.peopleUrl}/${id}`, { headers })
+    return this.http.delete(`${this.peopleUrl}/${id}`)
       .toPromise()
       .then(() => null);
 
   }
 
   changeStatus(id: number, active: boolean): Promise<void>{
-    const headers = new HttpHeaders()
-    .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==')
-    .append('Content-Type', 'application/json');
-
-    return this.http.put(`${this.peopleUrl}/${id}/active`, active, { headers })
+    return this.http.put(`${this.peopleUrl}/${id}/active`, active)
       .toPromise()
       .then(() => null);
 
   }
 
   update(people : People): Promise<People> {
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==')
-      .append('Content-Type', 'application/json');
-
-     return this.http.put<People>(`${this.peopleUrl}/${people.id}`,people, { headers })
+    return this.http.put<People>(`${this.peopleUrl}/${people.id}`,people)
       .toPromise();
   }
 
   findById(id : number) : Promise<People>{
-    const headers = new HttpHeaders()
-    .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
-
-    return this.http.get<People>(`${this.peopleUrl}/${id}`, { headers })
+    return this.http.get<People>(`${this.peopleUrl}/${id}`)
       .toPromise();
   }
 

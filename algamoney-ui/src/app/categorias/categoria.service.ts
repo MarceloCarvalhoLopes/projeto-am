@@ -13,11 +13,7 @@ export class CategoriaService {
   constructor(private http: HttpClient) { }
 
   listAll(): Promise<any>{
-
-    const headers = new HttpHeaders()
-    .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
-
-      return this.http.get(`${this.categoriesUrl}`,{ headers })
+    return this.http.get(`${this.categoriesUrl}`)
       .toPromise();
       //.then((response : any) => response['content']);
 

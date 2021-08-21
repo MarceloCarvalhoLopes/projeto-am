@@ -21,8 +21,6 @@ export class LancamentoService {
   constructor(private http: HttpClient) { }
 
   search(filter: LauchingFilter): Promise<any>{
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
 
       let params = new HttpParams();
 
@@ -41,7 +39,7 @@ export class LancamentoService {
         params = params.set('dueDateBy', format(filter.dueDateBy,'yyyy-MM-dd'));
       }
 
-      return this.http.get(`${this.launchingsURL}?resume`, { headers, params })
+      return this.http.get(`${this.launchingsURL}?resume`, { params })
         .toPromise()
         .then((response : any)  => {
            const launchings = response['content']
@@ -60,29 +58,18 @@ export class LancamentoService {
   }
 
   delete(id: number): Promise<void>{
-    const headers = new HttpHeaders()
-    .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
-
-    return this.http.delete(`${this.launchingsURL}/${id}`, { headers })
+    return this.http.delete(`${this.launchingsURL}/${id}`)
       .toPromise()
       .then(() => null);
   }
 
   create(launching:Launching): Promise<Launching> {
-    const headers = new HttpHeaders()
-    .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==')
-    .append('Content-Type', 'application/json');
-
-    return this.http.post<Launching>(this.launchingsURL,launching,{ headers })
+    return this.http.post<Launching>(this.launchingsURL,launching)
     .toPromise();
   }
 
   update(launching:Launching): Promise<Launching> {
-    const headers = new HttpHeaders()
-    .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==')
-    .append('Content-Type', 'application/json');
-
-    return this.http.put<Launching>(`${this.launchingsURL}/${launching.id}`,launching, { headers })
+    return this.http.put<Launching>(`${this.launchingsURL}/${launching.id}`,launching)
       .toPromise()
       .then( response => {
         const updatedLaunching = response;
@@ -94,10 +81,7 @@ export class LancamentoService {
   }
 
   findById(id: number): Promise<Launching>{
-    const headers = new HttpHeaders()
-    .append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
-
-    return this.http.get<Launching>(`${this.launchingsURL}/${id}`, { headers })
+    return this.http.get<Launching>(`${this.launchingsURL}/${id}`)
       .toPromise()
       .then(response => {
         const lauching = response;
