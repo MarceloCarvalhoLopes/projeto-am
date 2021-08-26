@@ -1,11 +1,12 @@
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
 import { LancamentoService, LauchingFilter } from './../lancamento.service';
-import { Title } from '@angular/platform-browser';
+import { AuthService } from './../../seguranca/auth.service';
 
 @Component({
   selector: 'app-lancamentos-pesquisa',
@@ -25,7 +26,8 @@ export class LancamentosPesquisaComponent implements OnInit {
     private messageService : MessageService,
     private confirmationService : ConfirmationService,
     private errorHandlerService : ErrorHandlerService,
-    private title : Title
+    private title : Title,
+    private authService: AuthService
     ){}
 
   ngOnInit() {

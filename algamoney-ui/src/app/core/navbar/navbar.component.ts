@@ -1,3 +1,4 @@
+import { AuthService } from './../../seguranca/auth.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -9,7 +10,12 @@ export class NavbarComponent  {
 
   exibindoMenu = false;
 
-  constructor() { }
+  constructor(
+    public authService : AuthService
+    ) { }
 
+  createNewAccessToken() {
+    this.authService.getNewAccessToken();
+  }
 
 }

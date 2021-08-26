@@ -3,14 +3,18 @@
     <div class="p-grid">
       <div class="p-col-12">
         <a href="javascript:;" class="navbar-toggle" (click)="exibindoMenu = !exibindoMenu"><i class="pi pi-bars"></i></a>
+        <!--<button type="button" (click)="createNewAccessToken()"> New access token</button>-->
+
       </div>
     </div>
   </div>
 
   <ul class="navbar-menu" [hidden]="!exibindoMenu">
-    <li class="navbar-usuario">Marcelo</li>
-    <li class="navbar-menuitem" routerLinkActive="ativo"><a routerLink="/lancamentos">Lancamentos</a></li>
-    <li class="navbar-menuitem" routerLinkActive="ativo"><a routerLink="/pessoas">Pessoas</a></li>
+    <li class="navbar-usuario">{{ authService.jwtPayload?.name }}</li>
+    <li class="navbar-menuitem" routerLinkActive="ativo"
+      *ngIf="authService.havePermission('ROLE_SEARCH_FINANCIAL_RELEASE')"><a routerLink="/lancamentos">Lancamentos</a></li>
+    <li class="navbar-menuitem" routerLinkActive="ativo"
+    *ngIf="authService.havePermission('ROLE_SEARCH_PEOPLE')"><a routerLink="/pessoas">Pessoas</a></li>
     <li class="navbar-menuitem"><a href="#">Logout</a></li>
   </ul>
 </nav>
