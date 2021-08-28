@@ -69,6 +69,11 @@ export class AuthService {
       });
   }
 
+  cleanAccessToken(){
+    localStorage.removeItem('token');
+    this.jwtPayload = null;
+  }
+
   isAccessTokenInvalid(){
     const token = localStorage.getItem('token');
 

@@ -15,6 +15,6 @@
       *ngIf="authService.havePermission('ROLE_SEARCH_FINANCIAL_RELEASE')"><a routerLink="/lancamentos">Lancamentos</a></li>
     <li class="navbar-menuitem" routerLinkActive="ativo"
     *ngIf="authService.havePermission('ROLE_SEARCH_PEOPLE')"><a routerLink="/pessoas">Pessoas</a></li>
-    <li class="navbar-menuitem"><a href="#">Logout</a></li>
+    <li class="navbar-menuitem"><a href="#" (click)="logout()">Logout</a></li>
   </ul>
 </nav>
