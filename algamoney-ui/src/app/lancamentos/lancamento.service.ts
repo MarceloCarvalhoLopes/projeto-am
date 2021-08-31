@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { format, parse } from 'date-fns';
@@ -16,9 +17,11 @@ export class LauchingFilter{
 })
 export class LancamentoService {
 
-  launchingsURL = 'http://localhost:8080/financial'
+  launchingsURL : string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.launchingsURL = `${environment.apiUrl}/financial`;
+  }
 
   search(filter: LauchingFilter): Promise<any>{
 
