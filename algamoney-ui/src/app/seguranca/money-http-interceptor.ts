@@ -16,11 +16,11 @@ export class MoneyHttpInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
-    if (!req.url.includes('/oauth/token') && this.authService.isAccessTokenInvalid()){
-      return from(this.authService.getNewAccessToken())
+    if (!req.url.includes('/oauth/token')) {
+      if (this.authService.isAccessTokenInvalid()) {
+        return from(this.authService.getNewAccessToken())
         .pipe(
           mergeMap(() => {
-
             if(this.authService.isAccessTokenInvalid()){
               throw new NotAuthenticatedError();
             }
@@ -30,11 +30,22 @@ export class MoneyHttpInterceptor implements HttpInterceptor {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
               }
             });
+
             return next.handle(req);
           })
         );
+      }
+      req = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
 
     }
+
     return next.handle(req);
   }
+
 }
+
+
