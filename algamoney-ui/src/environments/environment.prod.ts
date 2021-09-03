@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
-  apiUrl : 'https://algamoney-angular-marcelo.herokuapp.com'
+  production: true,  
+  apiUrl : 'https://algamoney-api-marcelo.herokuapp.com'
   //apiUrl:  'http://localhost:8080'
 };
