@@ -1,9 +1,10 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { catchError, mergeMap, tap } from 'rxjs/operators';
 
 import { AuthService } from './auth.service';
+import { LoadingService } from './../core/loading/loading.service';
 
 export class NotAuthenticatedError {}
 
@@ -13,9 +14,15 @@ export class NotAuthenticatedError {}
 })
 export class MoneyHttpInterceptor implements HttpInterceptor {
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private loadingService : LoadingService
+    ) { }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
+  intercept(req: HttpRequest<any>,  next: HttpHandler): Observable<HttpEvent<any>>{
+
+    this.loadingService.show(true);
+
     if (!req.url.includes('/oauth/token')) {
       if (this.authService.isAccessTokenInvalid()) {
         return from(this.authService.getNewAccessToken())
@@ -31,7 +38,7 @@ export class MoneyHttpInterceptor implements HttpInterceptor {
               }
             });
 
-            return next.handle(req);
+            return this.handleNextReq(req,next);
           })
         );
       }
@@ -43,8 +50,29 @@ export class MoneyHttpInterceptor implements HttpInterceptor {
 
     }
 
-    return next.handle(req);
+    return this.handleNextReq(req,next);
   }
+
+  private handleNextReq(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
+    return next.handle(req).pipe(
+      tap(evt => {
+        if (evt instanceof HttpResponse) {
+          // alguma ação global quando ocorre sucesso
+          this.loadingService.show(false);
+        }
+      }),
+      catchError(err => {
+        if (err instanceof HttpErrorResponse) {
+          // algum tratamento global quando ocorre erro
+          this.loadingService.show(false);
+        }
+        throw err;
+      })
+    );
+
+  }
+
 
 }
 
