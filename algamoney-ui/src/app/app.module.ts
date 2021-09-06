@@ -1,5 +1,3 @@
-import { SegurancaModule } from './seguranca/seguranca.module';
-import { SegurancaRoutingModule } from './seguranca/seguranca-routing.module';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -10,10 +8,9 @@ import localePt from '@angular/common/locales/pt';
 
 import { AppComponent } from './app.component';
 
-import { PessoasModule } from './pessoas/pessoas.module';
-import { LancamentosModule } from './lancamentos/lancamentos.module';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
+import { SegurancaModule } from './seguranca/seguranca.module';
 
 registerLocaleData(localePt);
 
@@ -29,8 +26,6 @@ registerLocaleData(localePt);
     HttpClientModule,
 
     CoreModule,
-    LancamentosModule,
-    PessoasModule,
     SegurancaModule,
     AppRoutingModule
 

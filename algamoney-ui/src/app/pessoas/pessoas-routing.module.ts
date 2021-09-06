@@ -8,20 +8,20 @@ import { AuthGuard } from '../seguranca/auth.guard';
 const routes: Routes = [
 
   {
-    path: 'pessoas',
+    path: '',
     component: PessoasPesquisaComponent,
     canActivate : [AuthGuard],
     data : { roles :['ROLE_SEARCH_PEOPLE'] }
   },
   {
-    path: 'pessoas/nova',
+    path: 'nova',
     component: PessoaCadastroComponent,
     canActivate : [AuthGuard],
     data : { roles :['ROLE_REGISTER_PEOPLE'] }
 
   },
   {
-    path: 'pessoas/:id',
+    path: ':id',
     component: PessoaCadastroComponent,
     canActivate : [AuthGuard],
     data : { roles :['ROLE_REGISTER_PEOPLE'] }

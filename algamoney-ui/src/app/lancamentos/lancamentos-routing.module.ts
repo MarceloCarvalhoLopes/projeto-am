@@ -7,19 +7,19 @@ import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos
 
 const routes: Routes = [
   {
-    path: 'lancamentos',
+    path: '',
     component: LancamentosPesquisaComponent,
     canActivate : [AuthGuard],
     data : {roles :['ROLE_SEARCH_FINANCIAL_RELEASE']}
   },
   {
-    path: 'lancamentos/novo',
+    path: 'novo',
     component: LancamentoCadastroComponent,
     canActivate : [AuthGuard],
     data : { roles :['ROLE_REGISTER_FINANCIAL_RELEASE'] }
   },
   {
-    path: 'lancamentos/:id',
+    path: ':id',
     component: LancamentoCadastroComponent,
     canActivate : [AuthGuard],
     data : { roles :['ROLE_REGISTER_FINANCIAL_RELEASE'] }
