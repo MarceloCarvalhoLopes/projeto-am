@@ -1,6 +1,6 @@
 import { Title } from '@angular/platform-browser';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { MessageService } from 'primeng/api';
@@ -69,7 +69,7 @@ export class LancamentoCadastroComponent implements OnInit {
       type: ['RECEIPT', Validators.required],
       dueDate: [null, Validators.required],
       paymentDate: [],
-      description: [null, [ Validators.required, Validators.minLength(5) ]],
+      description: [null, [ this.validateMandatory, this.validateMinLength(5) ]],
       value: [ null, Validators.required ],
       people: this.formBuilder.group({
         id: [ null, Validators.required ],
@@ -81,6 +81,15 @@ export class LancamentoCadastroComponent implements OnInit {
       }),
       observation: []
     });
+  }
+
+  validateMandatory(input : FormControl){
+    return (input.value ? null : {mandatory: true});
+  }
+  validateMinLength(value : number){
+    return (input : FormControl) => {
+      return(!input.value || input.value.length >= value) ? null : {minLength : { length : value} }
+    };
   }
 
   get editing(){
