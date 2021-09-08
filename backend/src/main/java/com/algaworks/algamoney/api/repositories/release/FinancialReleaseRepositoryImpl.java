@@ -1,5 +1,6 @@
 package com.algaworks.algamoney.api.repositories.release;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.ObjectUtils;
 
+import com.algaworks.algamoney.api.dto.FinancialStatisticalCategory;
 import com.algaworks.algamoney.api.models.Category_;
 import com.algaworks.algamoney.api.models.FinancialRelease;
 import com.algaworks.algamoney.api.models.FinancialRelease_;
@@ -28,6 +30,35 @@ public class FinancialReleaseRepositoryImpl implements FinancialReleaseRepositor
 	@PersistenceContext
 	private EntityManager manager;
 
+	@Override
+	public List<FinancialStatisticalCategory> byCategory(LocalDate monthReference) {
+		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+		
+		CriteriaQuery<FinancialStatisticalCategory> criteriaQuery = criteriaBuilder.
+				createQuery(FinancialStatisticalCategory.class);
+		
+		Root<FinancialRelease> root = criteriaQuery.from(FinancialRelease.class);
+		
+		criteriaQuery.select(criteriaBuilder.construct(FinancialStatisticalCategory.class, root.get(FinancialRelease_.category),
+				criteriaBuilder.sum(root.get(FinancialRelease_.value))));
+		
+		LocalDate firstDay = monthReference.withMonth(1);
+		LocalDate lastDay = monthReference.withDayOfMonth(monthReference.lengthOfMonth());
+		
+		criteriaQuery.where(
+				criteriaBuilder.greaterThanOrEqualTo(root.get(FinancialRelease_.dueDate), 
+						firstDay),
+				criteriaBuilder.lessThanOrEqualTo(root.get(FinancialRelease_.dueDate), 
+						lastDay));
+		
+		criteriaQuery.groupBy(root.get(FinancialRelease_.category));
+		
+		TypedQuery<FinancialStatisticalCategory> typedQuery = manager
+				.createQuery(criteriaQuery);
+		
+		return typedQuery.getResultList();
+	}
+	
 	@Override
 	public Page<FinancialRelease> filter(FinancialReleaseFilter financialReleaseFilter, Pageable pageable) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
