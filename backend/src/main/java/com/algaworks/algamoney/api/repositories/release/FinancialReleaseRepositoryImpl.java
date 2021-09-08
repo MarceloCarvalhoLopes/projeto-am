@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.util.ObjectUtils;
 
 import com.algaworks.algamoney.api.dto.FinancialStatisticalCategory;
+import com.algaworks.algamoney.api.dto.FinancialStatisticalDay;
 import com.algaworks.algamoney.api.models.Category_;
 import com.algaworks.algamoney.api.models.FinancialRelease;
 import com.algaworks.algamoney.api.models.FinancialRelease_;
@@ -30,6 +31,38 @@ public class FinancialReleaseRepositoryImpl implements FinancialReleaseRepositor
 	@PersistenceContext
 	private EntityManager manager;
 
+	@Override
+	public List<FinancialStatisticalDay> byDay(LocalDate monthReference) {
+		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+		
+		CriteriaQuery<FinancialStatisticalDay> criteriaQuery = criteriaBuilder.
+				createQuery(FinancialStatisticalDay.class);
+		
+		Root<FinancialRelease> root = criteriaQuery.from(FinancialRelease.class);
+		
+		criteriaQuery.select(criteriaBuilder.construct(FinancialStatisticalDay.class, 
+				root.get(FinancialRelease_.type),
+				root.get(FinancialRelease_.dueDate),
+				criteriaBuilder.sum(root.get(FinancialRelease_.value))));
+		
+		LocalDate firstDay = monthReference.withMonth(1);
+		LocalDate lastDay = monthReference.withDayOfMonth(monthReference.lengthOfMonth());
+		
+		criteriaQuery.where(
+				criteriaBuilder.greaterThanOrEqualTo(root.get(FinancialRelease_.dueDate), 
+						firstDay),
+				criteriaBuilder.lessThanOrEqualTo(root.get(FinancialRelease_.dueDate), 
+						lastDay));
+		
+		criteriaQuery.groupBy(root.get(FinancialRelease_.type),
+							  root.get(FinancialRelease_.dueDate));
+		
+		TypedQuery<FinancialStatisticalDay> typedQuery = manager
+				.createQuery(criteriaQuery);
+		
+		return typedQuery.getResultList();
+	}
+	
 	@Override
 	public List<FinancialStatisticalCategory> byCategory(LocalDate monthReference) {
 		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
