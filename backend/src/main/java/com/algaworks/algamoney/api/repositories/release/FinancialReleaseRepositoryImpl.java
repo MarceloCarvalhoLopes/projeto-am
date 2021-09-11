@@ -17,8 +17,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.ObjectUtils;
 
-import com.algaworks.algamoney.api.dto.FinancialStatisticalCategory;
-import com.algaworks.algamoney.api.dto.FinancialStatisticalDay;
+import com.algaworks.algamoney.api.dto.FinancialStatisticCategory;
+import com.algaworks.algamoney.api.dto.FinancialStatisticDay;
+import com.algaworks.algamoney.api.dto.FinancialStatisticPerson;
 import com.algaworks.algamoney.api.models.Category_;
 import com.algaworks.algamoney.api.models.FinancialRelease;
 import com.algaworks.algamoney.api.models.FinancialRelease_;
@@ -32,15 +33,45 @@ public class FinancialReleaseRepositoryImpl implements FinancialReleaseRepositor
 	private EntityManager manager;
 
 	@Override
-	public List<FinancialStatisticalDay> byDay(LocalDate monthReference) {
+	public List<FinancialStatisticPerson> byPerson(LocalDate first, LocalDate end) {
 		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
 		
-		CriteriaQuery<FinancialStatisticalDay> criteriaQuery = criteriaBuilder.
-				createQuery(FinancialStatisticalDay.class);
+		CriteriaQuery<FinancialStatisticPerson> criteriaQuery = criteriaBuilder.
+				createQuery(FinancialStatisticPerson.class);
 		
 		Root<FinancialRelease> root = criteriaQuery.from(FinancialRelease.class);
 		
-		criteriaQuery.select(criteriaBuilder.construct(FinancialStatisticalDay.class, 
+		criteriaQuery.select(criteriaBuilder.construct(FinancialStatisticPerson.class, 
+				root.get(FinancialRelease_.type),
+				root.get(FinancialRelease_.people),
+				criteriaBuilder.sum(root.get(FinancialRelease_.value))));
+		
+	
+		criteriaQuery.where(
+				criteriaBuilder.greaterThanOrEqualTo(root.get(FinancialRelease_.dueDate), 
+						first),
+				criteriaBuilder.lessThanOrEqualTo(root.get(FinancialRelease_.dueDate), 
+						end));
+		
+		criteriaQuery.groupBy(root.get(FinancialRelease_.type),
+							  root.get(FinancialRelease_.people));
+		
+		TypedQuery<FinancialStatisticPerson> typedQuery = manager
+				.createQuery(criteriaQuery);
+		
+		return typedQuery.getResultList();
+	}
+	
+	@Override
+	public List<FinancialStatisticDay> byDay(LocalDate monthReference) {
+		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+		
+		CriteriaQuery<FinancialStatisticDay> criteriaQuery = criteriaBuilder.
+				createQuery(FinancialStatisticDay.class);
+		
+		Root<FinancialRelease> root = criteriaQuery.from(FinancialRelease.class);
+		
+		criteriaQuery.select(criteriaBuilder.construct(FinancialStatisticDay.class, 
 				root.get(FinancialRelease_.type),
 				root.get(FinancialRelease_.dueDate),
 				criteriaBuilder.sum(root.get(FinancialRelease_.value))));
@@ -57,22 +88,22 @@ public class FinancialReleaseRepositoryImpl implements FinancialReleaseRepositor
 		criteriaQuery.groupBy(root.get(FinancialRelease_.type),
 							  root.get(FinancialRelease_.dueDate));
 		
-		TypedQuery<FinancialStatisticalDay> typedQuery = manager
+		TypedQuery<FinancialStatisticDay> typedQuery = manager
 				.createQuery(criteriaQuery);
 		
 		return typedQuery.getResultList();
 	}
 	
 	@Override
-	public List<FinancialStatisticalCategory> byCategory(LocalDate monthReference) {
+	public List<FinancialStatisticCategory> byCategory(LocalDate monthReference) {
 		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
 		
-		CriteriaQuery<FinancialStatisticalCategory> criteriaQuery = criteriaBuilder.
-				createQuery(FinancialStatisticalCategory.class);
+		CriteriaQuery<FinancialStatisticCategory> criteriaQuery = criteriaBuilder.
+				createQuery(FinancialStatisticCategory.class);
 		
 		Root<FinancialRelease> root = criteriaQuery.from(FinancialRelease.class);
 		
-		criteriaQuery.select(criteriaBuilder.construct(FinancialStatisticalCategory.class, root.get(FinancialRelease_.category),
+		criteriaQuery.select(criteriaBuilder.construct(FinancialStatisticCategory.class, root.get(FinancialRelease_.category),
 				criteriaBuilder.sum(root.get(FinancialRelease_.value))));
 		
 		LocalDate firstDay = monthReference.withMonth(1);
@@ -86,7 +117,7 @@ public class FinancialReleaseRepositoryImpl implements FinancialReleaseRepositor
 		
 		criteriaQuery.groupBy(root.get(FinancialRelease_.category));
 		
-		TypedQuery<FinancialStatisticalCategory> typedQuery = manager
+		TypedQuery<FinancialStatisticCategory> typedQuery = manager
 				.createQuery(criteriaQuery);
 		
 		return typedQuery.getResultList();
@@ -181,6 +212,7 @@ public class FinancialReleaseRepositoryImpl implements FinancialReleaseRepositor
 		
 		return manager.createQuery(criteria).getSingleResult();
 	}
+
 
 
 }

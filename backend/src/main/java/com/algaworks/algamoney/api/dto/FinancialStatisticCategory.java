@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 
 import com.algaworks.algamoney.api.models.Category;
 
-public class FinancialStatisticalCategory {
+public class FinancialStatisticCategory {
 
 	private Category category;
 	private BigDecimal total;
 	
-	public FinancialStatisticalCategory(Category category, BigDecimal total) {
+	public FinancialStatisticCategory(Category category, BigDecimal total) {
 		this.category = category;
 		this.total = total;
 	}

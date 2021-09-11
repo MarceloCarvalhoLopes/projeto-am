@@ -5,13 +5,13 @@ import java.time.LocalDate;
 
 import com.algaworks.algamoney.api.models.FinancialType;
 
-public class FinancialStatisticalDay {
+public class FinancialStatisticDay {
 
 	private FinancialType type;
 	private LocalDate day;
 	private BigDecimal total;
 	
-	public FinancialStatisticalDay(FinancialType type, LocalDate day, BigDecimal total) {
+	public FinancialStatisticDay(FinancialType type, LocalDate day, BigDecimal total) {
 		this.type = type;
 		this.day = day;
 		this.total = total;

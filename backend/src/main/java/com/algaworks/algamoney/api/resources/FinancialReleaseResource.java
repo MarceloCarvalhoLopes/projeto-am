@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algamoney.api.dto.FinancialStatisticalCategory;
-import com.algaworks.algamoney.api.dto.FinancialStatisticalDay;
+import com.algaworks.algamoney.api.dto.FinancialStatisticCategory;
+import com.algaworks.algamoney.api.dto.FinancialStatisticDay;
 import com.algaworks.algamoney.api.events.ResourceCreatedEvent;
 import com.algaworks.algamoney.api.exceptionhander.AlgamoneyExceptionHandler.Error;
 import com.algaworks.algamoney.api.models.FinancialRelease;
@@ -57,13 +57,13 @@ public class FinancialReleaseResource {
 	
 	@GetMapping("/statistic/by-day")
 	@PreAuthorize("hasAuthority('ROLE_SEARCH_FINANCIAL_RELEASE') and #oauth2.hasScope('read')")
-	public List<FinancialStatisticalDay> byDay(){
+	public List<FinancialStatisticDay> byDay(){
 		return this.financialReleaseRepository.byDay(LocalDate.now());
 	}
 	
 	@GetMapping("/statistic/by-category")
 	@PreAuthorize("hasAuthority('ROLE_SEARCH_FINANCIAL_RELEASE') and #oauth2.hasScope('read')")
-	public List<FinancialStatisticalCategory> byCategory(){
+	public List<FinancialStatisticCategory> byCategory(){
 		return this.financialReleaseRepository.byCategory(LocalDate.now());
 	}
 	
