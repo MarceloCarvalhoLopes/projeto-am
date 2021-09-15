@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="lauching-by-person" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7a9bfcff-fecc-4395-857e-3d69aed110e5">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="DT_INICIO" class="java.util.Date"/>
@@ -9,7 +9,7 @@
 	</queryString>
 	<field name="total" class="java.math.BigDecimal"/>
 	<field name="type" class="com.algaworks.algamoney.api.models.FinancialType"/>
-	<field name="pessoa" class="com.algaworks.algamoney.api.models.People"/>
+	<field name="people" class="com.algaworks.algamoney.api.models.People"/>
 	<title>
 		<band height="60" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -134,7 +134,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{pessoa}.getName()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{people}.getName()]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
 				<reportElement x="488" y="1" width="63" height="23" uuid="00f9bf10-6428-425a-9c44-a705a8f7869c">

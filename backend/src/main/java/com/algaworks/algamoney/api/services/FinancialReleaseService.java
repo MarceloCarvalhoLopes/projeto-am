@@ -45,7 +45,7 @@ public class FinancialReleaseService {
 		parameters.put("REPORT_LOCALE", new Locale("pt","BR"));
 		
 		InputStream inputStream = this.getClass().getResourceAsStream(
-				"reports/lauching-by-person.jasper");
+				"/reports/lauching-by-person.jasper");
 		
 		JasperPrint jasperPrint = JasperFillManager.fillReport(inputStream, parameters, 
 				new JRBeanCollectionDataSource(data));
