@@ -1,10 +1,12 @@
 package com.algaworks.algamoney.api.mail;
 
+import java.util.HashMap;
 //import java.util.Arrays;
 //import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -17,6 +19,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+
+import com.algaworks.algamoney.api.models.FinancialRelease;
+import com.algaworks.algamoney.api.models.UserSystem;
 
 //import com.algaworks.algamoney.api.models.FinancialRelease;
 //import com.algaworks.algamoney.api.repositories.FinancialReleaseRepository;
@@ -37,7 +42,7 @@ public class Mailer {
 
 //	@EventListener
 //	private void test(ApplicationReadyEvent event) {
-//		this.sendEmail("marcelolcarvalho@gmail.com", Arrays.asList("marcelolcarvalho@gmail.com","tiagohernany@gmail.com"),
+//		this.sendEmail("marcelolcarvalho@gmail.com", Arrays.asList("marcelolcarvalho@gmail.com"),
 //				"Teste", "Olá!<br/>Teste ok.");
 //		System.out.println("terminado o envio de e-mail");
 //	}
@@ -51,10 +56,28 @@ public class Mailer {
 //		Map<String ,Object> variaveis = new HashMap<>();
 //		variaveis.put("lancamentos", list);
 //		
-//		this.sendEmail("marcelolcarvalho@gmail.com", Arrays.asList("marcelolcarvalho@gmail.com","tiagohernany@gmail.com"),
+//		this.sendEmail("marcelolcarvalho@gmail.com", Arrays.asList("marcelolcarvalho@gmail.com"),
 //				"Testando", template, variaveis);
 //		System.out.println("terminado o envio de e-mail");
 //	}
+	
+	public void notifyFinancialOverdue(
+			List<FinancialRelease> overdue, List<UserSystem> to){
+		
+		Map<String, Object> var = new HashMap<>();
+		var.put("lancamentos", overdue);
+		
+		List<String> emails = to.stream()
+				.map(u -> u.getEmail())
+				.collect(Collectors.toList());
+		
+		this.sendEmail(
+				"marcelolcarvalho@gmail.com",
+				emails,
+				"Lançamentos Vencidos", 
+				"mail/notify-financial-overdue", 
+				var);		
+	}
 	
 	public void sendEmail(String from, 
 			List<String> to, String subject, String template, 

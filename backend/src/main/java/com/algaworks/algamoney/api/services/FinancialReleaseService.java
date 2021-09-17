@@ -13,13 +13,17 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.algaworks.algamoney.api.dto.FinancialStatisticPerson;
+import com.algaworks.algamoney.api.mail.Mailer;
 import com.algaworks.algamoney.api.models.FinancialRelease;
 import com.algaworks.algamoney.api.models.People;
+import com.algaworks.algamoney.api.models.UserSystem;
 import com.algaworks.algamoney.api.repositories.FinancialReleaseRepository;
 import com.algaworks.algamoney.api.repositories.PeopleRepository;
+import com.algaworks.algamoney.api.repositories.UserRepository;
 import com.algaworks.algamoney.api.services.exception.PeopleNonExistentOrInactive;
 
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -30,11 +34,33 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 @Service
 public class FinancialReleaseService {
 
+	private static final String TO = "ROLE_SEARCH_FINANCIAL_RELEASE";
+	
 	@Autowired
 	private PeopleRepository peopleRepository; 
 	
 	@Autowired
 	private FinancialReleaseRepository financialReleaseRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private Mailer mailer;
+	
+	@Scheduled(cron = " 0 0 6 * * *")
+	//@Scheduled(fixedDelay = 1000 * 60 * 30)
+	public void notifyAboutOverdueEntries() {
+		System.out.println(">>>>>>>>>> Method executed >>>>>>>>>>");
+		
+		List<FinancialRelease> overdue  = financialReleaseRepository
+				.findByDueDateLessThanEqualAndPaymentDateIsNull(LocalDate.now());
+		
+		List<UserSystem> to = userRepository.findByPermissionsDescription(TO);	
+		
+		mailer.notifyFinancialOverdue(overdue, to);		
+	}
+	
 	
 	public byte[] reportByPerson(LocalDate first, LocalDate end) throws Exception{
 		List<FinancialStatisticPerson> data = financialReleaseRepository.byPerson(first, end);
