@@ -48,7 +48,7 @@ public class FinancialReleaseService {
 	@Autowired
 	private Mailer mailer;
 	
-	@Scheduled(cron = " 0 0 6 * * *")
+	@Scheduled(cron = " 0 45 18 * * *")
 	//@Scheduled(fixedDelay = 1000 * 60 * 30)
 	public void notifyAboutOverdueEntries() {
 		System.out.println(">>>>>>>>>> Method executed >>>>>>>>>>");
