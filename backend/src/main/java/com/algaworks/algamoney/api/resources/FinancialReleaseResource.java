@@ -19,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -58,6 +59,11 @@ public class FinancialReleaseResource {
 	
 	@Autowired
 	private MessageSource messageSource;
+	
+	@Scheduled(cron = " 0 0 6 * * *")
+	public void notifyAboutOverdueEntries() {
+		System.out.println(">>>>>>>>>> Method executed >>>>>>>>>>");
+	}
 
 	@GetMapping("/reports/by-person")
 	@PreAuthorize("hasAuthority('ROLE_SEARCH_FINANCIAL_RELEASE') and #oauth2.hasScope('read')")
