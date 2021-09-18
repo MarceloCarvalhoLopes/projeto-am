@@ -1,5 +1,6 @@
 package com.algaworks.algamoney.api.services;
 
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -14,9 +15,16 @@ public class PeopleService {
 	@Autowired
 	private PeopleRepository peopleRepository;
 
+	public People save(People people) {
+		people.getContacts().forEach(c -> c.setPeople(people));
+		return peopleRepository.save(people);
+	}
+	
 	public People update(Long id, People people) {
 		People savedPeople = findPeopleById(id);
 
+		people.getContacts().forEach(c -> c.setPeople(people));
+		
 		BeanUtils.copyProperties(people, savedPeople, "id");
 		return this.peopleRepository.save(savedPeople);
 	}
@@ -32,5 +40,7 @@ public class PeopleService {
 				.orElseThrow(() -> new EmptyResultDataAccessException(1));
 		return savedPeople;
 	}
+
+
 
 }

@@ -63,7 +63,7 @@ public class PeopleResource {
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_REGISTER_PEOPLE') and #oauth2.hasScope('write')")
 	public ResponseEntity<People> create(@Valid @RequestBody People people, HttpServletResponse response) {
-		People savedPeople = peopleRepository.save(people);
+		People savedPeople = peopleService.save(people);
 
 		applicationEventPublisher.publishEvent(new ResourceCreatedEvent(this, response, savedPeople.getId()));
 
