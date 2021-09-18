@@ -1,12 +1,17 @@
 package com.algaworks.algamoney.api.models;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 
@@ -28,6 +33,10 @@ public class People {
 	
 	@NotNull
 	private Boolean active;
+	
+	@Valid
+	@OneToMany(mappedBy = "people", cascade = CascadeType.ALL)
+	private List<Contact> contacts;
 
 	
 	public Long getId() {
@@ -53,6 +62,13 @@ public class People {
 	}
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+	
+	public List<Contact> getContacts() {
+		return contacts;
+	}
+	public void setContacts(List<Contact> contacts) {
+		this.contacts = contacts;
 	}
 	
 	@JsonIgnore
