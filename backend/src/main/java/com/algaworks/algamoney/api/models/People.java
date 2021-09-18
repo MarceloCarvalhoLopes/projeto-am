@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="people")
@@ -34,6 +35,7 @@ public class People {
 	@NotNull
 	private Boolean active;
 	
+	@JsonIgnoreProperties("people")
 	@Valid
 	@OneToMany(mappedBy = "people", cascade = CascadeType.ALL)
 	private List<Contact> contacts;
