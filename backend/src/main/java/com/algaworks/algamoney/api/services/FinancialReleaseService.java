@@ -11,6 +11,8 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -36,6 +38,8 @@ public class FinancialReleaseService {
 
 	private static final String TO = "ROLE_SEARCH_FINANCIAL_RELEASE";
 	
+	private static final Logger logger = LoggerFactory.getLogger(FinancialReleaseService.class);
+	
 	@Autowired
 	private PeopleRepository peopleRepository; 
 	
@@ -48,17 +52,35 @@ public class FinancialReleaseService {
 	@Autowired
 	private Mailer mailer;
 	
-	@Scheduled(cron = " 0 30 19 * * *")
+	@Scheduled(cron = " 0 15 21 * * *")
 	//@Scheduled(fixedDelay = 1000 * 60 * 30)
 	public void notifyAboutOverdueEntries() {
-		System.out.println(">>>>>>>>>> Method executed >>>>>>>>>>");
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("Preparando envio de e-mails de aviso de lançamentos vencidos.");	
+		}
 		
 		List<FinancialRelease> overdue  = financialReleaseRepository
 				.findByDueDateLessThanEqualAndPaymentDateIsNull(LocalDate.now());
 		
+		if (overdue.isEmpty()) {
+			logger.info("Sem lançamentos vencidos para aviso");
+			return;
+		}
+		
+		logger.info("Existe {} lancamentos vencidos.", overdue.size());
+
 		List<UserSystem> to = userRepository.findByPermissionsDescription(TO);	
 		
+		if ( to.isEmpty()) {
+			logger.warn("Existem lançamentos vencidos, mas o sistema não encontrou destinatários.");
+			return;
+		}
+		
 		mailer.notifyFinancialOverdue(overdue, to);		
+		
+		logger.info("Envio de e-mail de aviso concluído.");
+		
 	}
 	
 	
