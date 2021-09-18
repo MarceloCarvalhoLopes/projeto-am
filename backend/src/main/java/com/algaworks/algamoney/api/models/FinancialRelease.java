@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 
@@ -55,6 +56,7 @@ public class FinancialRelease {
 	private Category category;
 	
 	//Um lançamento tem uma pessoa, mas esta pessoa pode ter outros lançamentos
+	@JsonIgnoreProperties("contacts")
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "PEOPLE_ID")
