@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.algaworks.algamoney.api.dto.Attach;
 import com.algaworks.algamoney.api.dto.FinancialStatisticCategory;
 import com.algaworks.algamoney.api.dto.FinancialStatisticDay;
 import com.algaworks.algamoney.api.events.ResourceCreatedEvent;
@@ -46,6 +47,7 @@ import com.algaworks.algamoney.api.repositories.filter.FinancialReleaseFilter;
 import com.algaworks.algamoney.api.repositories.projections.FinancialReleaseResume;
 import com.algaworks.algamoney.api.services.FinancialReleaseService;
 import com.algaworks.algamoney.api.services.exception.PeopleNonExistentOrInactive;
+import com.algaworks.algamoney.api.storage.S3;
 
 @RestController
 @RequestMapping("/financial")
@@ -63,14 +65,20 @@ public class FinancialReleaseResource {
 	@Autowired
 	private MessageSource messageSource;
 	
+	@Autowired
+	private S3 s3;
+	
 	@PostMapping("/file")
 	@PreAuthorize("hasAuthority('ROLE_REGISTER_FINANCIAL_RELEASE') and #oauth2.hasScope('write')")
-	public String uploadFile(@RequestParam MultipartFile file) throws IOException {
-		OutputStream out = new FileOutputStream(
-				"C:\\Users\\Marcelo Carvalho\\Desktop\\anexo--" + file.getOriginalFilename());
-		out.write(file.getBytes());
-		out.close();
-		return "ok";
+	public Attach uploadFile(@RequestParam MultipartFile file) throws IOException {
+//		OutputStream out = new FileOutputStream(
+//				"C:\\Users\\Marcelo Carvalho\\Desktop\\anexo--" + file.getOriginalFilename());
+//		out.write(file.getBytes());
+//		out.close();
+		String name = s3.saveTemporarily(file);
+		
+		return new Attach(name, s3.setUpUrl(name));
+//		return "ok";
 	}
 	
 	@GetMapping("/reports/by-person")

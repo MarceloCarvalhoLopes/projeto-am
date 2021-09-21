@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -13,13 +14,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import com.algaworks.algamoney.api.repositories.listener.FinancialAttachListener;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
-
+@EntityListeners(FinancialAttachListener.class)
 @Entity
 @Table(name = "financial_release")
 public class FinancialRelease {
@@ -62,6 +65,11 @@ public class FinancialRelease {
 	@JoinColumn(name = "PEOPLE_ID")
 	private People people;
 
+	private String attach;
+	
+	@Transient
+	private String urlAttach;
+	
 	@JsonIgnore
 	public boolean isReceipt() {
 		return FinancialType.RECEIPT.equals(this.type);
@@ -137,6 +145,24 @@ public class FinancialRelease {
 
 	public void setPeople(People people) {
 		this.people = people;
+	}
+	
+	
+
+	public String getAttach() {
+		return attach;
+	}
+
+	public void setAttach(String attach) {
+		this.attach = attach;
+	}
+
+	public String getUrlAttach() {
+		return urlAttach;
+	}
+
+	public void setUrlAttach(String urlAttach) {
+		this.urlAttach = urlAttach;
 	}
 
 	@Override

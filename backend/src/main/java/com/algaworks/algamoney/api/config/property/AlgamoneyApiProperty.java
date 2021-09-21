@@ -9,6 +9,11 @@ public class AlgamoneyApiProperty {
 	
 	private final Mail mail = new Mail();
 	
+	private final S3 s3 = new S3();
+	
+	public S3 getS3() {
+		return s3;
+	}
 	
 	
 	public Mail getMail() {
@@ -19,6 +24,42 @@ public class AlgamoneyApiProperty {
 		return security;
 	}
 	
+	public static class S3{
+		
+		private String accesKeyId;
+		
+		private String secretAccessKey;
+		
+		private String bucket = "aw-testedev-algamoney-files";
+		
+		
+
+		public String getBucket() {
+			return bucket;
+		}
+
+		public void setBucket(String bucket) {
+			this.bucket = bucket;
+		}
+
+		public String getAccesKeyId() {
+			return accesKeyId;
+		}
+
+		public void setAccesKeyId(String accesKeyId) {
+			this.accesKeyId = accesKeyId;
+		}
+
+		public String getSecretAccessKey() {
+			return secretAccessKey;
+		}
+
+		public void setSecretAccessKey(String secretAccessKey) {
+			this.secretAccessKey = secretAccessKey;
+		}
+		
+		
+	}
 
 	public static class Security{
 	
@@ -43,6 +84,7 @@ public class AlgamoneyApiProperty {
 		}
 		
 	}
+	
 	
 	public static class Mail{
 		
