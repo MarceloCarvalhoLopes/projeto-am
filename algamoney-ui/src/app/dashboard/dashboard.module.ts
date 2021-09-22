@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { DashboardRoutingModule } from './dashboard-routing.module';
+import { PanelModule } from 'primeng/panel';
 
+import { DashboardRoutingModule } from './dashboard-routing.module';
 import { SharedModule } from './../shared/shared.module';
 
 
@@ -10,6 +11,8 @@ import { SharedModule } from './../shared/shared.module';
   declarations: [],
   imports: [
     CommonModule,
+
+    PanelModule,
 
     SharedModule,
     DashboardRoutingModule
