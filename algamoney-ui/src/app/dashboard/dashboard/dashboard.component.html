@@ -5,14 +5,14 @@
     </div>
 
     <div class="p-col-12 p-md-6">
-       <p-panel header="Lançamentos por categoria">
-
-        </p-panel>
+      <p-panel header="Lançamentos por categoria">
+        <p-chart type="pie" [data]="pieChartData"></p-chart>
+      </p-panel>
     </div>
 
     <div class="p-col-12 p-md-6">
       <p-panel header="Lançamentos por dia">
-
+        <p-chart type="line" [data]="lineChartData"></p-chart>
       </p-panel>
     </div>
 
