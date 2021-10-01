@@ -19,6 +19,8 @@ import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component'
 import { AuthService } from '../seguranca/auth.service';
 import { NaoAutorizadoComponent } from './nao-autorizado.component';
 import { LoadingComponent } from './loading/loading.component';
+import { DashboardService } from '../dashboard/dashboard.service';
+import { CategoriaService } from '../categorias/categoria.service';
 
 
 
@@ -53,6 +55,9 @@ import { LoadingComponent } from './loading/loading.component';
 
     LancamentoService,
     PessoaService,
+    CategoriaService,
+    DashboardService,
+
     ErrorHandlerService,
     AuthService,
     LoadingService
